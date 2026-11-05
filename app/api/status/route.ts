@@ -1,9 +1,9 @@
 import { env } from "cloudflare:workers";
-import { Publisher, requireOwner, safeError, type PublisherEnv } from "../../../lib/telegram";
+import { Publisher, PUBLIC_CALLER, safeError, type PublisherEnv } from "../../../lib/telegram";
+import { API_HEADERS, options } from "../../../lib/http";
 export const dynamic = "force-dynamic";
-export async function GET(request: Request) {
-  try {
-    const settings = env as unknown as PublisherEnv, caller = requireOwner(request, settings);
-    return Response.json(await new Publisher(settings).status(caller), { headers: { "Cache-Control": "no-store" } });
-  } catch (error) { return Response.json({ error: safeError(error) }, { status: 403, headers: { "Cache-Control": "no-store" } }); }
+export const OPTIONS = options;
+export async function GET() {
+  try { return Response.json(await new Publisher(env as unknown as PublisherEnv).status(PUBLIC_CALLER), { headers: API_HEADERS }); }
+  catch (error) { return Response.json({ error: safeError(error) }, { status: 500, headers: API_HEADERS }); }
 }

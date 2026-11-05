@@ -2,17 +2,13 @@ export const CHANNEL = "@kansk_segodnya";
 export const CHAT_ID = -1004489066922;
 export const BOT_ID = 9166835869;
 export const BOT_USERNAME = "kansk_segodnya_editor_bot";
-export type PublisherEnv = { DB: D1Database; TELEGRAM_BOT_TOKEN?: string; OWNER_EMAIL?: string };
+export type PublisherEnv = { DB: D1Database; TELEGRAM_BOT_TOKEN?: string };
 export type Caller = { id: string; email: string };
 type Args = Record<string, unknown>;
 export class PublisherError extends Error {}
 export class TelegramRejected extends PublisherError {}
 
-export function requireOwner(request: Request, env: PublisherEnv): Caller {
-  const id = request.headers.get("oai-authenticated-user-id"), email = request.headers.get("oai-authenticated-user-email");
-  if (!id || !email || !env.OWNER_EMAIL || email.toLowerCase() !== env.OWNER_EMAIL.toLowerCase()) throw new PublisherError("Доступ разрешён только владельцу подключения.");
-  return { id, email };
-}
+export const PUBLIC_CALLER: Caller = { id: "public-channel", email: "" };
 export function safeError(error: unknown): string {
   return (error instanceof PublisherError ? error.message : "Операция не подтверждена. Проверьте её состояние по ключу, прежде чем повторять.").replace(/\b\d{6,}:[A-Za-z0-9_-]{25,}\b/g, "[скрыто]");
 }

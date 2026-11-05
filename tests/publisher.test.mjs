@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { DatabaseSync } from 'node:sqlite';
 import { readFileSync } from 'node:fs';
-import { Publisher, Telegram, buildOperation, requireOwner, CHAT_ID, BOT_ID, BOT_USERNAME } from '../lib/telegram.ts';
+import { Publisher, Telegram, buildOperation, PUBLIC_CALLER, CHAT_ID, BOT_ID, BOT_USERNAME } from '../lib/telegram.ts';
 const owner = { id: 'owner', email: 'owner@example.invalid' };
 function database() {
   const sql = new DatabaseSync(':memory:');
@@ -33,10 +33,9 @@ function fixture({ mutation = 'ok', chatId = CHAT_ID } = {}) {
   return { env, calls, transport, publisher: new Publisher(env, transport) };
 }
 const args = { operation_key: 'news-1', text: 'Разрешённый пост' };
-test('owner required, wrong or absent identity rejected', () => {
-  const env = { OWNER_EMAIL: owner.email };
-  for (const headers of [{}, { 'oai-authenticated-user-id': 'x', 'oai-authenticated-user-email': 'stranger@example.invalid' }]) assert.throws(() => requireOwner(new Request('https://example.invalid', { headers }), env));
-  assert.equal(requireOwner(new Request('https://example.invalid', { headers: { 'oai-authenticated-user-id': 'owner', 'oai-authenticated-user-email': owner.email } }), env).id, 'owner');
+test('public channel scope is stable without a login or API key', () => {
+  assert.equal(PUBLIC_CALLER.id, 'public-channel');
+  assert.equal(PUBLIC_CALLER.email, '');
 });
 test('channel cannot be replaced; invalid edits fail before network', () => {
   assert.throws(() => buildOperation('telegram_publish_text', { ...args, chat_id: '@other' }));
