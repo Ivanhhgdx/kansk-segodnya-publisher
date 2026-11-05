@@ -87,3 +87,13 @@ test('read requests retry, write requests do not, errors hide credentials', asyn
   await assert.rejects(api.call('getMe'), e => !e.message.includes(env.TELEGRAM_BOT_TOKEN)); assert.equal(calls, 2);
   await assert.rejects(api.call('sendMessage'), e => !e.message.includes(env.TELEGRAM_BOT_TOKEN)); assert.equal(calls, 3);
 });
+test('Worker-compatible redirect mode never forwards credentials to another origin', async () => {
+  const env = { TELEGRAM_BOT_TOKEN: '123456:' + 'x'.repeat(35) }; let calls = 0;
+  const api = new Telegram(env, async (url, init) => {
+    calls++; assert.equal(init.redirect, 'manual');
+    assert.equal(new URL(url).hostname, 'api.telegram.org');
+    return new Response(null, { status: 302, headers: { Location: 'https://other.invalid/' } });
+  });
+  await assert.rejects(api.call('getMe'), e => !e.message.includes(env.TELEGRAM_BOT_TOKEN));
+  assert.equal(calls, 1);
+});

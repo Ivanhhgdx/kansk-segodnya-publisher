@@ -25,10 +25,14 @@ export class Telegram {
     for (let attempt = 0; attempt < (readOnly ? 2 : 1); attempt++) {
       let response: Response;
       try {
-        response = await this.transport(`https://api.telegram.org/bot${token}/${method}`, { method: "POST", redirect: "error", headers: { "Content-Type": "application/json" }, body: JSON.stringify(params), signal: AbortSignal.timeout(readOnly ? 8000 : 40000) });
+        response = await this.transport(`https://api.telegram.org/bot${token}/${method}`, { method: "POST", redirect: "manual", headers: { "Content-Type": "application/json" }, body: JSON.stringify(params), signal: AbortSignal.timeout(readOnly ? 8000 : 40000) });
       } catch {
         if (readOnly && attempt === 0) continue;
         throw new PublisherError(readOnly ? "Telegram не ответил на проверку подключения." : "Ответ Telegram не получен. Повторная отправка заблокирована до выяснения результата.");
+      }
+      if (response.status >= 300 && response.status < 400) {
+        await response.body?.cancel();
+        throw new PublisherError("Telegram вернул неожиданный переход. Запрос на другой адрес не отправлен.");
       }
       let data: any;
       try { data = await response.json(); } catch {
