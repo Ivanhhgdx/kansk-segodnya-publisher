@@ -10,7 +10,7 @@ type Operation = { operation_key: string; method: string; status: string; create
 type Connection = { connected: boolean; checked_at: string; rights?: Record<string, unknown> };
 function date(value: string) { return new Date(value).toLocaleString("ru-RU", { timeZone: "Asia/Krasnoyarsk", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }); }
 function kind(file: File) { return file.type.startsWith("video/") || /\.(mp4|mov)$/i.test(file.name) ? "video" : file.type.startsWith("audio/") ? "audio" : file.type.startsWith("image/") || /\.(jpe?g|png|webp)$/i.test(file.name) ? "photo" : "document"; }
-const quickStart = `curl -fsS https://ivanhhgdx.github.io/kansk-segodnya-publisher/edit.py -o edit.py\npython3 edit.py check\npython3 edit.py photo image.jpg -c "Подпись"\npython3 edit.py video clip.mp4 -c "Подпись"\npython3 edit.py text "Текст поста"`;
+const quickStart = `curl -fsS https://edit-kansk-publisher.ivanfomin2003.chatgpt.site/edit.py -o edit.py\npython3 edit.py check\npython3 edit.py photo image.jpg -c "Подпись"\npython3 edit.py video clip.mp4 -c "Подпись"\npython3 edit.py text "Текст поста"`;
 export default function Dashboard() {
   const [tab, setTab] = useState("compose"), [mode, setMode] = useState("text"), [text, setText] = useState(""), [post, setPost] = useState("");
   const [files, setFiles] = useState<File[]>([]), [html, setHtml] = useState(false), [silent, setSilent] = useState(false);
@@ -77,7 +77,7 @@ export default function Dashboard() {
   async function copy() { await navigator.clipboard.writeText(quickStart); setCopied(true); setTimeout(() => setCopied(false), 1800); }
   function selectMethod(method: Method) {
     const params: Record<string, unknown> = {};
-    for (const p of method.parameters.filter(p => p.required && !["chat_id", "user_id"].includes(p.name))) params[p.name] = p.type.includes("Array") ? [] : p.type.includes("Integer") ? 123 : p.type.includes("Boolean") ? true : "";
+    for (const p of method.parameters.filter(p => p.required && p.name !== "chat_id" && !(method.method === "getUserProfilePhotos" && p.name === "user_id"))) params[p.name] = p.type.includes("Array") ? [] : p.type.includes("Integer") ? 123 : p.type.includes("Boolean") ? true : "";
     setRaw(JSON.stringify({ command: "call", method: method.method, params }, null, 2)); setTab("terminal"); reset();
   }
   const matching = methods.filter(m => `${m.method} ${m.description}`.toLowerCase().includes(search.toLowerCase()));

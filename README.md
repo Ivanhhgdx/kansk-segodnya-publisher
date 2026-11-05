@@ -3,14 +3,14 @@
 Система публикации и управления каналом `@kansk_segodnya` через официальный Telegram Bot API.
 
 - [Сайт](https://ivanhhgdx.github.io/kansk-segodnya-publisher/)
-- [Инструкция для агента](https://ivanhhgdx.github.io/kansk-segodnya-publisher/agent.md)
-- [Клиент edit.py](https://ivanhhgdx.github.io/kansk-segodnya-publisher/edit.py)
+- [Инструкция для агента](https://edit-kansk-publisher.ivanfomin2003.chatgpt.site/agent.md)
+- [Клиент edit.py](https://edit-kansk-publisher.ivanfomin2003.chatgpt.site/edit.py)
 - [Каталог команд и методов](https://edit-kansk-publisher.ivanfomin2003.chatgpt.site/api/command)
 
 ## Команды
 
 ```sh
-curl -fsS https://ivanhhgdx.github.io/kansk-segodnya-publisher/edit.py -o edit.py
+curl -fsS https://edit-kansk-publisher.ivanfomin2003.chatgpt.site/edit.py -o edit.py
 python3 edit.py check
 python3 edit.py text "Текст поста"
 python3 edit.py photo image.jpg -c "Подпись"

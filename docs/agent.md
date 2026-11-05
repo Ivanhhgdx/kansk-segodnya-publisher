@@ -5,7 +5,7 @@
 ## Начало
 
 ```sh
-curl -fsS https://ivanhhgdx.github.io/kansk-segodnya-publisher/edit.py -o edit.py
+curl -fsS https://edit-kansk-publisher.ivanfomin2003.chatgpt.site/edit.py -o edit.py
 python3 edit.py check
 python3 edit.py help
 ```

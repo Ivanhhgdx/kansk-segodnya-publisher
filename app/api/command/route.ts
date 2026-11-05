@@ -10,8 +10,8 @@ export function GET() {
   return Response.json({
     name: "Канск Сегодня — команды", version: "4", channel: CHANNEL,
     endpoint: "https://edit-kansk-publisher.ivanfomin2003.chatgpt.site/api/command", method: "POST",
-    guide: "https://ivanhhgdx.github.io/kansk-segodnya-publisher/agent.md",
-    client: "https://ivanhhgdx.github.io/kansk-segodnya-publisher/edit.py",
+    guide: "https://edit-kansk-publisher.ivanfomin2003.chatgpt.site/agent.md",
+    client: "https://edit-kansk-publisher.ivanfomin2003.chatgpt.site/edit.py",
     examples: [{ command: "check" }, { command: "text", text: "Текст поста", key: "news-001" }, { command: "delete", id: 123, key: "delete-123" }, { command: "call", method: "getMyCommands", params: {} }],
     commands: SHORT_COMMANDS, methods: METHODS,
     files: { direct: "POST /api/upload: multipart/form-data с полями command, key, caption и file (обычный файл)", staged: "POST /api/files: байты файла; X-File-Name, X-File-Size, Content-Type. Полученный file передать команде.", examples: ['python3 edit.py photo /path/image.jpg -c "Подпись"', 'python3 edit.py video /path/clip.mp4 -c "Подпись"', 'python3 edit.py album a.jpg b.jpg clip.mp4'], max_photo_bytes: 10000000, max_file_bytes: 50000000, album_count: [2, 10] },
