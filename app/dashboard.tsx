@@ -1,0 +1,28 @@
+"use client";
+import { useEffect, useState } from "react";
+import { ArrowUpRight, Check, Cloud, RefreshCw, ShieldCheck, Radio, FileText, Pencil, CircleAlert } from "lucide-react";
+
+function time(value: string) { return new Date(value).toLocaleString("ru-RU", { timeZone: "Asia/Krasnoyarsk", day: "numeric", month: "long", hour: "2-digit", minute: "2-digit" }); }
+const labels: Record<string, string> = { sendMessage: "Текстовая публикация", sendPhoto: "Публикация фото", sendVideo: "Публикация видео", editMessageText: "Изменение текста", editMessageCaption: "Изменение подписи", editMessageMedia: "Замена вложения" };
+const statuses: Record<string, string> = { done: "Выполнено", pending: "Ожидает ответа", uncertain: "Нужна проверка", rejected: "Отклонено" };
+type Operation = { operation_key: string; method: string; status: string; created_at: string; result: { url?: string } | null };
+type Status = { connection?: { connected: boolean; checked_at: string } | null; operations?: Operation[]; error?: string };
+export default function Dashboard() {
+  const [data, setData] = useState<Status | null>(null), [busy, setBusy] = useState(false), [error, setError] = useState("");
+  async function load() { const r = await fetch("/api/status"); const body = await r.json() as Status; if (body.error) setError(body.error); else setData(body); }
+  useEffect(() => { load().catch(() => setError("Не удалось загрузить состояние подключения.")); }, []);
+  async function check() {
+    setBusy(true); setError("");
+    try { const r = await fetch("/api/check", { method: "POST" }); const body = await r.json() as Status; if (body.error) setError(body.error); else await load(); }
+    catch { setError("Ответ не получен. Проверку связи можно повторить."); } finally { setBusy(false); }
+  }
+  const connected = data?.connection?.connected === true;
+  return <main className="edit-shell">
+    <header className="edit-header"><a href="/" className="edit-wordmark"><span className="edit-symbol">e<span>·</span></span><span>Edit<span className="wordmark-note">КАНСК СЕГОДНЯ</span></span></a><div className="private-note"><ShieldCheck size={15} /> Личное подключение</div></header>
+    <section className="edit-intro"><div><div className="eyebrow"><span /> ОБЛАЧНЫЙ РЕДАКТОР</div><h1>На связи.<br /><span>Даже без Mac.</span></h1><p className="intro-copy">Публикации и правки для вашего канала.<br />Edit работает через сохранённое облачное подключение.</p></div><div className="edit-orbit" aria-hidden="true"><div className="orbit-ring ring-one" /><div className="orbit-ring ring-two" /><div className="orbit-core">e<span>·</span></div><div className="orbit-dot" /></div></section>
+    <section className="edit-grid"><article className="connection-card"><div className="card-label">ВАШ КАНАЛ <Radio size={17} /></div><h2>Канск Сегодня<span>Новости</span></h2><a className="channel-link" href="https://t.me/kansk_segodnya" target="_blank" rel="noreferrer">@kansk_segodnya <ArrowUpRight size={16} /></a><div className="connection-divider" /><div className="connection-status"><span className={connected ? "status-dot connected" : "status-dot"} /><strong>{connected ? "Связь подтверждена" : "Подключение подготовлено"}</strong></div><p className="connection-detail">{connected ? `Проверено ${time(data?.connection?.checked_at ?? "")}` : "Нажмите кнопку, чтобы проверить сохранённый доступ."}</p><button className="check-button" onClick={check} disabled={busy}><RefreshCw size={16} className={busy ? "spinning" : ""} />{busy ? "Проверяем связь…" : "Проверить связь"}</button>{error && <div className="error-note" role="alert"><CircleAlert size={17} /><span>{error}</span></div>}<p className="quiet-note">Проверка ничего не публикует.</p></article>
+      <article className="details-card"><div className="card-label">КАК РАБОТАЕТ ПОДКЛЮЧЕНИЕ <Cloud size={17} /></div><div className="feature-row"><div className="feature-icon"><Cloud size={20} /></div><div><h3>Работает в облаке</h3><p>Публикация не зависит от питания<br className="desktop-br" /> и сна вашего компьютера.</p></div></div><div className="feature-row"><div className="feature-icon"><ShieldCheck size={20} /></div><div><h3>Только ваш канал</h3><p>Доступ привязан к вашему аккаунту<br className="desktop-br" /> и @kansk_segodnya.</p></div></div><div className="feature-row"><div className="feature-icon"><Check size={20} /></div><div><h3>Результат сохраняется</h3><p>Пост получает номер и ссылку.<br className="desktop-br" /> Повторная операция не создаёт дубль.</p></div></div></article></section>
+    <section className="activity"><div className="activity-heading"><h2>Последние действия</h2><span>Облачный журнал</span></div>{data?.operations?.length ? <div className="activity-list">{data.operations.map((op: any) => <div className="activity-row" key={op.operation_key}><div className="activity-icon">{op.method.startsWith("edit") ? <Pencil size={18} /> : <FileText size={18} />}</div><div className="activity-title"><strong>{labels[op.method] || op.method}</strong><span>{time(op.created_at)}</span></div><span className={`operation-status ${op.status}`}>{statuses[op.status] || op.status}</span>{op.result?.url && <a href={op.result.url} target="_blank" rel="noreferrer" aria-label="Открыть пост"><ArrowUpRight size={18} /></a>}</div>)}</div> : <div className="empty-activity"><FileText size={26} /><h3>Здесь появятся публикации Edit</h3><p>После первого поручения в журнале сохранятся<br />ссылка на пост и результат операции.</p></div>}</section>
+    <footer className="edit-footer"><span>Edit / Канск Сегодня</span><span>Публикация через официальный Telegram Bot API</span></footer>
+  </main>;
+}
