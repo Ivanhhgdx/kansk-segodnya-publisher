@@ -1,9 +1,9 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readJson, API_HEADERS, options } from '../lib/http.ts';
-test('public JSON clients receive CORS without credentials or login', () => {
+test('JSON and file clients receive correct CORS headers', () => {
   assert.equal(API_HEADERS['Access-Control-Allow-Origin'], '*');
-  assert.equal(API_HEADERS['Access-Control-Allow-Headers'], 'Content-Type');
+  assert.match(API_HEADERS['Access-Control-Allow-Headers'], /X-File-Size/);
   assert.equal(options().status, 204);
   assert.equal(API_HEADERS['Cache-Control'], 'no-store');
 });

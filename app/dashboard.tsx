@@ -1,64 +1,104 @@
 "use client";
 import { useEffect, useState, type FormEvent } from "react";
-import { ArrowUpRight, Check, Cloud, RefreshCw, Globe, Radio, FileText, Pencil, CircleAlert, Send } from "lucide-react";
-
+import { ArrowUpRight, Check, ChevronRight, Copy, Download, FilePlus2, RefreshCw, Send, Terminal, Paperclip, Trash2, X } from "lucide-react";
 const CLOUD = "https://edit-kansk-publisher.ivanfomin2003.chatgpt.site";
 function endpoint(path: string) { return (typeof window !== "undefined" && ["localhost", "127.0.0.1"].includes(window.location.hostname) ? "" : CLOUD) + path; }
-function time(value: string) { return new Date(value).toLocaleString("ru-RU", { timeZone: "Asia/Krasnoyarsk", day: "numeric", month: "long", hour: "2-digit", minute: "2-digit" }); }
-const labels: Record<string, string> = { sendMessage: "Текстовая публикация", sendPhoto: "Публикация фото", sendVideo: "Публикация видео", editMessageText: "Изменение текста", editMessageCaption: "Изменение подписи", editMessageMedia: "Замена вложения" };
-const statuses: Record<string, string> = { done: "Выполнено", pending: "Ожидает ответа", uncertain: "Нужна проверка", rejected: "Отклонено" };
-type Operation = { operation_key: string; method: string; status: string; created_at: string; result: { url?: string } | null };
-type Status = { connection?: { connected: boolean; checked_at: string } | null; operations?: Operation[]; error?: string };
-type Result = { operation_key?: string; message_id?: number; url?: string; status?: string; repeated?: boolean; result?: { url?: string } | null; error?: string };
-function newKey() { return `web-${crypto.randomUUID()}`; }
+const modes: Record<string, string> = { text: "Текст", photo: "Фото", video: "Видео", album: "Альбом", document: "Документ", audio: "Аудио", voice: "Голосовое", animation: "Анимация", edit: "Правка текста", caption: "Правка подписи", replace: "Замена вложения", delete: "Удаление", pin: "Закрепление", unpin: "Открепление" };
+type Parameter = { name: string; type: string; required: boolean; description: string };
+type Method = { method: string; readOnly: boolean; scope: string; description: string; parameters: Parameter[]; source: string };
+type Operation = { operation_key: string; method: string; status: string; created_at: string; result: { url?: string; message_id?: number } | null };
+type Connection = { connected: boolean; checked_at: string; rights?: Record<string, unknown> };
+function date(value: string) { return new Date(value).toLocaleString("ru-RU", { timeZone: "Asia/Krasnoyarsk", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }); }
+function kind(file: File) { return file.type.startsWith("video/") || /\.(mp4|mov)$/i.test(file.name) ? "video" : file.type.startsWith("audio/") ? "audio" : file.type.startsWith("image/") || /\.(jpe?g|png|webp)$/i.test(file.name) ? "photo" : "document"; }
+const quickStart = `curl -fsS https://ivanhhgdx.github.io/kansk-segodnya-publisher/edit.py -o edit.py\npython3 edit.py check\npython3 edit.py photo image.jpg -c "Подпись"\npython3 edit.py video clip.mp4 -c "Подпись"\npython3 edit.py text "Текст поста"`;
 export default function Dashboard() {
-  const [data, setData] = useState<Status | null>(null), [busy, setBusy] = useState(false), [error, setError] = useState("");
-  const [action, setAction] = useState("telegram_publish_text"), [text, setText] = useState(""), [key, setKey] = useState("");
-  const [messageId, setMessageId] = useState(""), [kind, setKind] = useState("photo"), [media, setMedia] = useState("");
-  const [html, setHtml] = useState(false), [silent, setSilent] = useState(false), [sending, setSending] = useState(false), [result, setResult] = useState<Result | null>(null);
-  const editing = action.startsWith("telegram_edit_"), withMedia = action.endsWith("media"), withText = action !== "telegram_get_operation", caption = action.endsWith("caption") || withMedia;
-  async function load() { const r = await fetch(endpoint("/api/status")); const body = await r.json() as Status; if (body.error) setError(body.error); else setData(body); }
-  useEffect(() => { setKey(newKey()); load().catch(() => setError("Не удалось загрузить состояние подключения.")); }, []);
+  const [tab, setTab] = useState("compose"), [mode, setMode] = useState("text"), [text, setText] = useState(""), [post, setPost] = useState("");
+  const [files, setFiles] = useState<File[]>([]), [html, setHtml] = useState(false), [silent, setSilent] = useState(false);
+  const [key, setKey] = useState(""), [result, setResult] = useState<any>(null), [error, setError] = useState("");
+  const [busy, setBusy] = useState(false), [progress, setProgress] = useState(""), [checking, setChecking] = useState(false), [connection, setConnection] = useState<Connection | null>(null);
+  const [operations, setOperations] = useState<Operation[]>([]), [methods, setMethods] = useState<Method[]>([]), [search, setSearch] = useState(""), [expanded, setExpanded] = useState("");
+  const [raw, setRaw] = useState('{\n  "command": "call",\n  "method": "getMyCommands",\n  "params": {}\n}'), [copied, setCopied] = useState(false);
+  function reset() { setKey(`edit-${crypto.randomUUID()}`); setResult(null); setError(""); }
+  async function load() {
+    const response = await fetch(endpoint("/api/status")); const value = await response.json() as any;
+    if (value.error) throw new Error(value.error);
+    setConnection(value.connection); setOperations(value.operations || []);
+  }
+  useEffect(() => {
+    reset(); load().catch(() => {});
+    fetch(endpoint("/api/command")).then(r => r.json()).then((value: any) => setMethods(value.methods || [])).catch(() => {});
+  }, []);
   async function check() {
-    setBusy(true); setError("");
-    try { const r = await fetch(endpoint("/api/check"), { method: "POST" }); const body = await r.json() as Status; if (body.error) setError(body.error); else await load(); }
-    catch { setError("Ответ не получен. Проверку связи можно повторить."); } finally { setBusy(false); }
+    setChecking(true); setError("");
+    try { const r = await fetch(endpoint("/api/command"), { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ command: "check" }) }); const v = await r.json() as any; if (!v.ok) throw new Error(v.error); setConnection(v.result); }
+    catch (e) { setError((e as Error).message); } finally { setChecking(false); }
   }
+  async function upload(file: File, index: number) {
+    if (file.size > 50_000_000) throw new Error(`«${file.name}» превышает 50 МБ.`);
+    setProgress(`Загружаем файл ${index + 1} из ${files.length}: ${file.name}`);
+    const r = await fetch(endpoint("/api/files"), { method: "POST", headers: { "Content-Type": file.type || "application/octet-stream", "X-File-Name": encodeURIComponent(file.name), "X-File-Size": String(file.size) }, body: file });
+    const v = await r.json() as any; if (!v.ok) throw new Error(v.error); return v.result.file as string;
+  }
+  async function execute(body: any) {
+    setProgress("Выполняем команду…");
+    if (!body.key && !body.operation_key && !["check", "history", "operation", "bot", "channel", "commands"].includes(body.command)) body.key = key;
+    const r = await fetch(endpoint("/api/command"), { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+    const v = await r.json() as any; if (!v.ok) throw new Error(v.error); setResult(v.result); await load();
+  }
+  const media = ["photo", "video", "album", "document", "audio", "voice", "animation", "replace"].includes(mode);
+  const hasId = ["edit", "caption", "replace", "delete", "pin", "unpin"].includes(mode);
+  const hasText = !["delete", "pin", "unpin"].includes(mode);
+  const caption = !["text", "edit"].includes(mode);
   async function submit(event: FormEvent) {
-    event.preventDefault(); setSending(true); setResult(null);
-    const args: Record<string, unknown> = { operation_key: key };
-    if (editing) args.message_id = Number(messageId);
-    if (withText) { args[caption ? "caption" : "text"] = text; if (html) args.parse_mode = "HTML"; }
-    if (withMedia) { args.kind = kind; args.media_ref = media; }
-    if (action.startsWith("telegram_publish_")) args.silent = silent;
+    event.preventDefault(); setBusy(true); setError(""); setResult(null);
     try {
-      const response = await fetch(endpoint("/api/command"), { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action, arguments: args }) });
-      const body = await response.json() as { ok: boolean; result?: Result; error?: string };
-      setResult(body.ok ? body.result ?? {} : { error: body.error ?? "Операция не подтверждена." });
-    } catch { setResult({ error: "Ответ не получен. Проверьте результат с этим же ключом операции, прежде чем отправлять снова." }); }
-    finally { setSending(false); load().catch(() => {}); }
+      const body: any = { command: mode, key };
+      if (hasId) {
+        const ids = post.split(/[,\s]+/).filter(Boolean).map(Number);
+        if (!ids.length || ids.some(id => !Number.isSafeInteger(id) || id <= 0) || mode !== "delete" && ids.length !== 1) throw new Error("Укажите корректный номер поста.");
+        if (mode === "delete" && ids.length > 1) body.ids = ids; else body.id = ids[0];
+      }
+      if (hasText) body[caption ? "caption" : "text"] = text;
+      if (media) {
+        if (!files.length || mode !== "album" && files.length !== 1 || mode === "album" && (files.length < 2 || files.length > 10)) throw new Error(mode === "album" ? "Прикрепите от 2 до 10 файлов." : "Прикрепите один файл.");
+        const uploaded = []; for (let i = 0; i < files.length; i++) uploaded.push({ type: kind(files[i]), file: await upload(files[i], i) });
+        if (mode === "album") body.files = uploaded; else { body.file = uploaded[0].file; if (mode === "replace") body.kind = uploaded[0].type; }
+      }
+      if (html && hasText) body.parse_mode = "HTML";
+      if (silent && !hasId) body.silent = true;
+      await execute(body);
+    } catch (e) { setError((e as Error).message || "Ответ не получен. Проверьте операцию по сохранённому ключу перед повтором."); }
+    finally { setBusy(false); setProgress(""); }
   }
-  const connected = data?.connection?.connected === true;
-  const resultUrl = result?.url || result?.result?.url;
-  return <main className="edit-shell">
-    <header className="edit-header"><a href="#" className="edit-wordmark"><span className="edit-symbol">e<span>·</span></span><span>Edit<span className="wordmark-note">КАНСК СЕГОДНЯ</span></span></a><div className="private-note"><Globe size={15} /> Общий доступ · без входа</div></header>
-    <section className="edit-intro"><div><div className="eyebrow"><span /> ОБЛАЧНЫЙ РЕДАКТОР</div><h1>Открыли.<br /><span>Опубликовали.</span></h1><p className="intro-copy">Команды для канала «Канск Сегодня».<br />Без входа, плагина и включённого Mac.</p></div><div className="edit-orbit" aria-hidden="true"><div className="orbit-ring ring-one" /><div className="orbit-ring ring-two" /><div className="orbit-core">e<span>·</span></div><div className="orbit-dot" /></div></section>
-    <section className="edit-grid"><article className="connection-card"><div className="card-label">ВАШ КАНАЛ <Radio size={17} /></div><h2>Канск Сегодня<span>Новости</span></h2><a className="channel-link" href="https://t.me/kansk_segodnya" target="_blank" rel="noreferrer">@kansk_segodnya <ArrowUpRight size={16} /></a><div className="connection-divider" /><div className="connection-status"><span className={connected ? "status-dot connected" : "status-dot"} /><strong>{connected ? "Связь подтверждена" : "Связь ещё не проверена"}</strong></div><p className="connection-detail">{connected ? `Проверено ${time(data?.connection?.checked_at ?? "")}` : "Проверьте сохранённый доступ к Telegram."}</p><button className="check-button" onClick={check} disabled={busy}><RefreshCw size={16} className={busy ? "spinning" : ""} />{busy ? "Проверяем связь…" : "Проверить связь"}</button>{error && <div className="error-note" role="alert"><CircleAlert size={17} /><span>{error}</span></div>}<p className="quiet-note">Проверка ничего не публикует.</p></article>
-      <article className="details-card"><div className="card-label">КАК ЭТО РАБОТАЕТ <Cloud size={17} /></div><div className="feature-row"><div className="feature-icon"><Cloud size={20} /></div><div><h3>Исполняется в облаке</h3><p>Сервер отправляет команды в Telegram.<br className="desktop-br" /> Mac можно выключить.</p></div></div><div className="feature-row"><div className="feature-icon"><Globe size={20} /></div><div><h3>Доступно всем</h3><p>Публикации и правки без регистрации,<br className="desktop-br" /> паролей и подключения плагина.</p></div></div><div className="feature-row"><div className="feature-icon"><Check size={20} /></div><div><h3>Результат сохраняется</h3><p>Пост получает номер и ссылку.<br className="desktop-br" /> Повтор с тем же ключом не создаёт дубль.</p></div></div></article></section>
-    <section className="command-card"><div className="activity-heading"><h2>Команда для канала</h2><span>Публикация и редактирование</span></div>
-      <form onSubmit={submit} className="command-form">
-        <label>Действие<select value={action} disabled={sending} onChange={e => { setAction(e.target.value); setResult(null); }}><option value="telegram_publish_text">Опубликовать текст</option><option value="telegram_publish_media">Опубликовать фото или видео</option><option value="telegram_edit_text">Изменить текст поста</option><option value="telegram_edit_caption">Изменить подпись</option><option value="telegram_edit_media">Заменить фото или видео</option><option value="telegram_get_operation">Проверить результат по ключу</option></select></label>
-        <div className="form-columns"><label>Ключ операции<input value={key} onChange={e => setKey(e.target.value)} required maxLength={120} /></label>{editing && <label>Номер поста<input type="number" min="1" step="1" value={messageId} onChange={e => setMessageId(e.target.value)} required /></label>}</div>
-        {withMedia && <div className="form-columns"><label>Вложение<select value={kind} onChange={e => setKind(e.target.value)}><option value="photo">Фото</option><option value="video">Видео</option></select></label><label>Прямая HTTPS-ссылка или file_id<input value={media} onChange={e => setMedia(e.target.value)} required maxLength={4096} /></label></div>}
-        {withText && <label>{caption ? "Полная подпись" : "Текст поста"}<textarea value={text} onChange={e => setText(e.target.value)} required={!caption} maxLength={caption ? 1024 : 4096} rows={6} placeholder={caption ? "Пустая строка — без подписи" : "Введите текст публикации"} /></label>}
-        {withText && <div className="form-options"><label><input type="checkbox" checked={html} onChange={e => setHtml(e.target.checked)} />Разметка HTML</label>{!editing && <label><input type="checkbox" checked={silent} onChange={e => setSilent(e.target.checked)} />Без уведомления</label>}</div>}
-        <div className="form-actions"><button type="submit" className="publish-button" disabled={sending || !key}><Send size={16} />{sending ? "Выполняем…" : action === "telegram_get_operation" ? "Проверить результат" : editing ? "Сохранить правку" : "Опубликовать"}</button><button type="button" className="new-operation" disabled={sending} onClick={() => { setKey(newKey()); setResult(null); }}>Новая операция</button></div>
-        <p className="form-hint">Сохраняйте ключ до получения результата. При обрыве связи сначала проверьте операцию с тем же ключом.</p>
-        {result && <div className={result.error ? "command-result failed" : "command-result"} role="status">{result.error ? result.error : <><strong>{result.status === "done" ? result.repeated ? "Уже выполнено — повторной отправки нет" : "Готово" : `Состояние: ${result.status || "получено"}`}</strong>{result.message_id && <span>Пост №{result.message_id}</span>}{resultUrl && <a href={resultUrl} target="_blank" rel="noreferrer">Открыть пост <ArrowUpRight size={14} /></a>}</>}</div>}
-      </form>
-    </section>
-    <details className="agent-instructions"><summary>Команды для Edit</summary><p>Передайте Edit ссылку на эту страницу. Она может работать через форму либо отправлять JSON на открытый адрес ниже. Токен и плагин не нужны.</p><a href={`${CLOUD}/api/command`} target="_blank" rel="noreferrer">Инструкция и полный список команд <ArrowUpRight size={14} /></a><pre>{`POST ${CLOUD}/api/command\nContent-Type: application/json\n\n{"action":"telegram_check_connection","arguments":{}}`}</pre><p>Если среда Edit не разрешает этот домен, потребуется штатное разрешение платформы на доступ к нему. Сам сайт сетевые ограничения Edit не меняет.</p></details>
-    <section className="activity"><div className="activity-heading"><h2>Последние действия</h2><span>Общий облачный журнал</span></div>{data?.operations?.length ? <div className="activity-list">{data.operations.map(op => <div className="activity-row" key={op.operation_key}><div className="activity-icon">{op.method.startsWith("edit") ? <Pencil size={18} /> : <FileText size={18} />}</div><div className="activity-title"><strong>{labels[op.method] || op.method}</strong><span>{time(op.created_at)} · {op.operation_key}</span></div><span className={`operation-status ${op.status}`}>{statuses[op.status] || op.status}</span>{op.result?.url && <a href={op.result.url} target="_blank" rel="noreferrer" aria-label="Открыть пост"><ArrowUpRight size={18} /></a>}</div>)}</div> : <div className="empty-activity"><FileText size={26} /><h3>Здесь появятся публикации</h3><p>В журнале сохранятся ссылка на пост<br />и результат каждой операции.</p></div>}</section>
-    <footer className="edit-footer"><span>Edit / Канск Сегодня</span><a href="https://github.com/Ivanhhgdx/kansk-segodnya-publisher" target="_blank" rel="noreferrer">Проект на GitHub ↗</a><span>Официальный Telegram Bot API</span></footer>
+  async function submitRaw(event: FormEvent) {
+    event.preventDefault(); setBusy(true); setError(""); setResult(null);
+    try { await execute(JSON.parse(raw)); } catch (e) { setError((e as Error).message); } finally { setBusy(false); setProgress(""); }
+  }
+  async function copy() { await navigator.clipboard.writeText(quickStart); setCopied(true); setTimeout(() => setCopied(false), 1800); }
+  function selectMethod(method: Method) {
+    const params: Record<string, unknown> = {};
+    for (const p of method.parameters.filter(p => p.required && !["chat_id", "user_id"].includes(p.name))) params[p.name] = p.type.includes("Array") ? [] : p.type.includes("Integer") ? 123 : p.type.includes("Boolean") ? true : "";
+    setRaw(JSON.stringify({ command: "call", method: method.method, params }, null, 2)); setTab("terminal"); reset();
+  }
+  const matching = methods.filter(m => `${m.method} ${m.description}`.toLowerCase().includes(search.toLowerCase()));
+  const resultLink = result?.url || result?.result?.url;
+  return <main className="workspace">
+    <header className="topbar"><a className="brand" href="#"><span className="brand-icon"><Terminal size={21}/></span><span>Канск Сегодня<small>РЕДАКТОР КАНАЛА</small></span></a><a className="channel" href="https://t.me/kansk_segodnya" target="_blank" rel="noreferrer">@kansk_segodnya <ArrowUpRight size={14}/></a></header>
+    <section className="title-row"><div><div className="overline">УПРАВЛЕНИЕ ПУБЛИКАЦИЯМИ</div><h1>Одна команда.<br/><span>Текст, фото или видео.</span></h1></div><div className="connection"><span className={connection?.connected ? "dot ready" : "dot"}/><div><strong>{connection?.connected ? "Telegram подключён" : "Проверить Telegram"}</strong><small>{connection?.checked_at ? date(connection.checked_at) : "Бот редактора канала"}</small></div><button onClick={check} disabled={checking} title="Проверить соединение" aria-label="Проверить соединение"><RefreshCw size={16} className={checking ? "spin" : ""}/></button></div></section>
+    <section className="start-card"><div className="start-heading"><div><Terminal size={17}/><strong>Начало работы для агента</strong></div><button onClick={copy}><Copy size={14}/>{copied ? "Скопировано" : "Скопировать"}</button></div><pre>{quickStart}</pre><div className="start-links"><a href="./edit.py" download><Download size={14}/>Клиент edit.py</a><a href="./agent.md" target="_blank" rel="noreferrer">Инструкция <ArrowUpRight size={14}/></a><a href={`${CLOUD}/api/command`} target="_blank" rel="noreferrer">Каталог API <ArrowUpRight size={14}/></a></div></section>
+    <nav className="tabs" aria-label="Разделы редактора">{[["compose","Создать или изменить"],["methods","Все команды"],["terminal","JSON-команда"],["history","Журнал"]].map(([id,label]) => <button key={id} className={tab === id ? "selected" : ""} onClick={() => setTab(id)}>{label}{id === "methods" && methods.length > 0 && <span>{methods.length}</span>}</button>)}</nav>
+    {tab === "compose" && <section className="panel"><form onSubmit={submit}>
+      <div className="form-top"><label>Действие<select value={mode} disabled={busy} onChange={e => { setMode(e.target.value); setFiles([]); reset(); }}>{Object.entries(modes).map(([value,label]) => <option key={value} value={value}>{label}</option>)}</select></label>{hasId && <label>{mode === "delete" ? "Номера постов через запятую" : "Номер поста"}<input value={post} onChange={e => setPost(e.target.value)} placeholder="123" required/></label>}</div>
+      {media && <div className="attachment"><label className="file-picker"><input type="file" multiple={mode === "album"} accept={mode === "photo" ? "image/*" : mode === "video" ? "video/*" : mode === "album" || mode === "replace" ? "image/*,video/*" : undefined} onChange={e => setFiles(Array.from(e.target.files || []))} disabled={busy}/><span className="upload-icon"><FilePlus2 size={25}/></span><strong>{mode === "album" ? "Прикрепить файлы альбома" : "Прикрепить файл"}</strong><small>Выберите файл на своём компьютере</small></label>{files.length > 0 && <ul className="file-list">{files.map((file,i) => <li key={`${file.name}-${i}`}><Paperclip size={15}/><span>{file.name}<small>{(file.size / 1_000_000).toFixed(2)} МБ</small></span><button type="button" onClick={() => setFiles(files.filter((_,n) => n !== i))} disabled={busy} aria-label={`Убрать ${file.name}`}><X size={15}/></button></li>)}</ul>}</div>}
+      {hasText && <label>{caption ? "Подпись" : "Текст"}<textarea value={text} onChange={e => setText(e.target.value)} rows={6} required={!caption} maxLength={caption ? 1024 : 4096} placeholder={caption ? "Подпись к публикации" : "Текст публикации"}/></label>}
+      <div className="options">{hasText && <label><input type="checkbox" checked={html} onChange={e => setHtml(e.target.checked)}/>HTML</label>}{!hasId && <label><input type="checkbox" checked={silent} onChange={e => setSilent(e.target.checked)}/>Без уведомления</label>}</div>
+      <div className="actions"><button className={mode === "delete" ? "primary danger" : "primary"} disabled={busy || !key}>{mode === "delete" ? <Trash2 size={16}/> : <Send size={16}/>} {busy ? progress || "Выполняем…" : mode === "delete" ? "Удалить" : hasId ? "Выполнить" : "Опубликовать"}</button><button type="button" className="secondary" onClick={reset} disabled={busy}>Новая команда</button></div>
+    </form></section>}
+    {tab === "methods" && <section className="panel"><div className="catalog-top"><h2>Методы канала и бота</h2><input value={search} onChange={e => setSearch(e.target.value)} placeholder="Найти: удалить, опрос, getMyCommands…" aria-label="Найти команду"/></div><div className="catalog">{matching.map(method => <article key={method.method} className="method"><button className="method-heading" onClick={() => setExpanded(expanded === method.method ? "" : method.method)}><span><code>{method.method}</code><small>{method.description}</small></span><ChevronRight size={17} className={expanded === method.method ? "rotated" : ""}/></button>{expanded === method.method && <div className="method-body"><div className="parameter-list">{method.parameters.filter(p => p.name !== "chat_id").map(p => <div key={p.name}><code>{p.name}{p.required && " *"}</code><span>{p.type.replace(/\[([^\]]+)\]\([^)]+\)/g,"$1")}</span><p>{p.description}</p></div>)}</div><div className="method-actions"><button className="secondary" onClick={() => selectMethod(method)}>Подготовить команду</button><a href={method.source} target="_blank" rel="noreferrer">Документация <ArrowUpRight size={14}/></a></div></div>}</article>)}</div>{!matching.length && <p className="muted">Команды не найдены.</p>}</section>}
+    {tab === "terminal" && <section className="panel"><h2>JSON-команда</h2><form onSubmit={submitRaw}><textarea className="json-editor" value={raw} onChange={e => setRaw(e.target.value)} rows={12} spellCheck={false} aria-label="JSON-команда"/><div className="actions"><button className="primary" disabled={busy || !key}><Send size={16}/>{busy ? "Выполняем…" : "Выполнить команду"}</button><button type="button" className="secondary" onClick={reset} disabled={busy}>Новый ключ</button></div></form></section>}
+    {tab === "history" && <section className="panel"><div className="section-heading"><h2>Последние команды</h2><button className="secondary" onClick={() => load().catch(e => setError(e.message))}><RefreshCw size={14}/>Обновить</button></div>{operations.length ? <div className="operation-list">{operations.map(op => <article className="operation" key={op.operation_key}><div><code>{op.method}</code><small>{date(op.created_at)} · {op.operation_key}</small></div><span className={`state ${op.status}`}>{{done:"Выполнено",pending:"Ожидает ответа",uncertain:"Проверьте результат",rejected:"Отклонено"}[op.status] || op.status}</span>{op.result?.url && <a href={op.result.url} target="_blank" rel="noreferrer"><ArrowUpRight size={17}/></a>}</article>)}</div> : <div className="empty"><Terminal size={25}/><h3>Команд пока нет</h3><p>Здесь сохраняются результаты отправленных команд.</p></div>}</section>}
+    {error && <div className="notice error" role="alert">{error}<small>Ключ: {key}</small></div>}
+    {result && <section className="notice success" role="status"><div className="result-title"><Check size={18}/><strong>{result.status === "done" ? result.repeated ? "Команда уже выполнена" : "Команда выполнена" : "Ответ получен"}</strong>{resultLink && <a href={resultLink} target="_blank" rel="noreferrer">Открыть пост <ArrowUpRight size={14}/></a>}</div>{result.messages?.length > 1 && <div className="album-links">{result.messages.map((m:any) => <a key={m.message_id} href={m.url} target="_blank" rel="noreferrer">Пост №{m.message_id}</a>)}</div>}<details><summary>Результат команды</summary><pre>{JSON.stringify(result,null,2)}</pre></details></section>}
+    <footer><span>Канск Сегодня · Редактор</span><div><a href="https://github.com/Ivanhhgdx/kansk-segodnya-publisher" target="_blank" rel="noreferrer">GitHub <ArrowUpRight size={12}/></a><a href="./agent.md" target="_blank" rel="noreferrer">Инструкция <ArrowUpRight size={12}/></a></div></footer>
   </main>;
 }

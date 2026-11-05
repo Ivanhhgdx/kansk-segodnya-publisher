@@ -33,7 +33,7 @@ function fixture({ mutation = 'ok', chatId = CHAT_ID } = {}) {
   return { env, calls, transport, publisher: new Publisher(env, transport) };
 }
 const args = { operation_key: 'news-1', text: 'Разрешённый пост' };
-test('public channel scope is stable without a login or API key', () => {
+test('channel journal scope is stable', () => {
   assert.equal(PUBLIC_CALLER.id, 'public-channel');
   assert.equal(PUBLIC_CALLER.email, '');
 });
@@ -44,7 +44,7 @@ test('channel cannot be replaced; invalid edits fail before network', () => {
 });
 test('check pins channel and never mutates Telegram', async () => {
   const f = fixture(); const r = await f.publisher.check();
-  assert.equal(r.requires_mac, false); assert.equal(r.can_edit_messages, true);
+  assert.equal(r.connected, true); assert.equal(r.can_edit_messages, true);
   assert.deepEqual(f.calls.map(c => c.method), ['getMe','getChat','getChatMember']);
   const g = fixture({ chatId: 123 }); await assert.rejects(g.publisher.execute(owner, 'telegram_publish_text', args));
   assert.equal(g.calls.filter(c => c.method === 'sendMessage').length, 0);

@@ -3,7 +3,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Edit — Канск Сегодня",
-  description: "Публичная облачная система публикации и редактирования канала Канск Сегодня.",
+  description: "Система публикации и управления каналом Канск Сегодня.",
   icons: {
     icon: "/favicon.svg",
     shortcut: "/favicon.svg",

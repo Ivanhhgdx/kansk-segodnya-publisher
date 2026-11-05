@@ -2,7 +2,7 @@ export const API_HEADERS = {
   "Cache-Control": "no-store",
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-  "Access-Control-Allow-Headers": "Content-Type",
+  "Access-Control-Allow-Headers": "Content-Type, X-File-Name, X-File-Size, Idempotency-Key",
   "X-Content-Type-Options": "nosniff",
 };
 export function options() { return new Response(null, { status: 204, headers: API_HEADERS }); }

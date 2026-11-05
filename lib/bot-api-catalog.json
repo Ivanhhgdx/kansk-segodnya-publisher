@@ -1,0 +1,4632 @@
+[
+  {
+    "method": "getUpdates",
+    "readOnly": false,
+    "scope": "bot",
+    "description": "Получить обновления бота; offset подтверждает обработку предыдущих обновлений.",
+    "required": [],
+    "allowed": [
+      "offset",
+      "limit",
+      "timeout",
+      "allowed_updates"
+    ],
+    "parameters": [
+      {
+        "name": "offset",
+        "type": "Integer",
+        "required": false,
+        "description": "Identifier of the first update to be returned. Must be greater by one than the highest among the identifiers of previously received updates. By default, updates starting with the earliest unconfirmed update are returned. An update is considered confirmed as soon as [getUpdates](/bots/api/methods/getupdates.md) is called with an *offset* higher than its *update_id*. The negative offset can be specified to retrieve updates starting from *-offset* update from the end of the updates queue. All previous updates will be forgotten."
+      },
+      {
+        "name": "limit",
+        "type": "Integer",
+        "required": false,
+        "description": "Limits the number of updates to be retrieved. Values between 1-100 are accepted. Defaults to 100."
+      },
+      {
+        "name": "timeout",
+        "type": "Integer",
+        "required": false,
+        "description": "Timeout in seconds for long polling. Defaults to 0, i.e. usual short polling. Should be positive, short polling should be used for testing purposes only."
+      },
+      {
+        "name": "allowed_updates",
+        "type": "Array of String",
+        "required": false,
+        "description": "A JSON-serialized list of the update types you want your bot to receive. For example, specify `[\"message\", \"edited_channel_post\", \"callback_query\"]` to only receive updates of these types. See [Update](/bots/api/types/update.md) for a complete list of available update types. Specify an empty list to receive all update types except *chat_member*, *message_reaction*, and *message_reaction_count* (default). If not specified, the previous setting will be used. \\"
+      }
+    ],
+    "source": "https://core.telegram.org/bots/api#getupdates"
+  },
+  {
+    "method": "setWebhook",
+    "readOnly": false,
+    "scope": "bot",
+    "description": "Настроить получение обновлений через webhook.",
+    "required": [
+      "url"
+    ],
+    "allowed": [
+      "url",
+      "certificate",
+      "ip_address",
+      "max_connections",
+      "allowed_updates",
+      "drop_pending_updates",
+      "secret_token"
+    ],
+    "parameters": [
+      {
+        "name": "url",
+        "type": "String",
+        "required": true,
+        "description": "HTTPS URL to send updates to. Use an empty string to remove webhook integration."
+      },
+      {
+        "name": "certificate",
+        "type": "[InputFile](/bots/api/types/inputfile.md)",
+        "required": false,
+        "description": "Upload your public key certificate so that the root certificate in use can be checked. See our [self-signed guide](/bots/self-signed.md) for details."
+      },
+      {
+        "name": "ip_address",
+        "type": "String",
+        "required": false,
+        "description": "The fixed IP address which will be used to send webhook requests instead of the IP address resolved through DNS"
+      },
+      {
+        "name": "max_connections",
+        "type": "Integer",
+        "required": false,
+        "description": "The maximum allowed number of simultaneous HTTPS connections to the webhook for update delivery, 1-100. Defaults to *40*. Use lower values to limit the load on your bot's server, and higher values to increase your bot's throughput."
+      },
+      {
+        "name": "allowed_updates",
+        "type": "Array of String",
+        "required": false,
+        "description": "A JSON-serialized list of the update types you want your bot to receive. For example, specify `[\"message\", \"edited_channel_post\", \"callback_query\"]` to only receive updates of these types. See [Update](/bots/api/types/update.md) for a complete list of available update types. Specify an empty list to receive all update types except *chat_member*, *message_reaction*, and *message_reaction_count* (default). If not specified, the previous setting will be used. \\"
+      },
+      {
+        "name": "drop_pending_updates",
+        "type": "Boolean",
+        "required": false,
+        "description": "Pass *True* to drop all pending updates"
+      },
+      {
+        "name": "secret_token",
+        "type": "String",
+        "required": false,
+        "description": "A secret token to be sent in a header \"X-Telegram-Bot-Api-Secret-Token\" in every webhook request, 1-256 characters. Only characters `A-Z`, `a-z`, `0-9`, `_` and `-` are allowed. The header is useful to ensure that the request comes from a webhook set by you."
+      }
+    ],
+    "source": "https://core.telegram.org/bots/api#setwebhook"
+  },
+  {
+    "method": "deleteWebhook",
+    "readOnly": false,
+    "scope": "bot",
+    "description": "Отключить webhook.",
+    "required": [],
+    "allowed": [
+      "drop_pending_updates"
+    ],
+    "parameters": [
+      {
+        "name": "drop_pending_updates",
+        "type": "Boolean",
+        "required": false,
+        "description": "Pass *True* to drop all pending updates"
+      }
+    ],
+    "source": "https://core.telegram.org/bots/api#deletewebhook"
+  },
+  {
+    "method": "getWebhookInfo",
+    "readOnly": true,
+    "scope": "bot",
+    "description": "Получить состояние webhook.",
+    "required": [],
+    "allowed": [],
+    "parameters": [],
+    "source": "https://core.telegram.org/bots/api#getwebhookinfo"
+  },
+  {
+    "method": "getMe",
+    "readOnly": true,
+    "scope": "bot",
+    "description": "Получить сведения о боте.",
+    "required": [],
+    "allowed": [],
+    "parameters": [],
+    "source": "https://core.telegram.org/bots/api#getme"
+  },
+  {
+    "method": "sendMessage",
+    "readOnly": false,
+    "scope": "channel",
+    "description": "Опубликовать текст.",
+    "required": [
+      "chat_id",
+      "text"
+    ],
+    "allowed": [
+      "business_connection_id",
+      "chat_id",
+      "message_thread_id",
+      "direct_messages_topic_id",
+      "ephemeral_message_parameters",
+      "text",
+      "parse_mode",
+      "entities",
+      "link_preview_options",
+      "disable_notification",
+      "protect_content",
+      "allow_paid_broadcast",
+      "message_effect_id",
+      "suggested_post_parameters",
+      "reply_parameters",
+      "reply_markup"
+    ],
+    "parameters": [
+      {
+        "name": "business_connection_id",
+        "type": "String",
+        "required": false,
+        "description": "Unique identifier of the business connection on behalf of which the message will be sent"
+      },
+      {
+        "name": "chat_id",
+        "type": "Integer or String",
+        "required": true,
+        "description": "Unique identifier for the target chat or username of the target bot, supergroup or channel in the format `@username`"
+      },
+      {
+        "name": "message_thread_id",
+        "type": "Integer",
+        "required": false,
+        "description": "Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only"
+      },
+      {
+        "name": "direct_messages_topic_id",
+        "type": "Integer",
+        "required": false,
+        "description": "Identifier of the direct messages topic to which the message will be sent; required if the message is sent to a direct messages chat"
+      },
+      {
+        "name": "ephemeral_message_parameters",
+        "type": "[EphemeralMessageParameters](/bots/api/types/ephemeralmessageparameters.md)",
+        "required": false,
+        "description": "A JSON-serialized object containing the parameters of the ephemeral message to send"
+      },
+      {
+        "name": "text",
+        "type": "String",
+        "required": true,
+        "description": "Text of the message to be sent, 1-4096 characters after entities parsing"
+      },
+      {
+        "name": "parse_mode",
+        "type": "String",
+        "required": false,
+        "description": "Mode for parsing entities in the message text. See [formatting options](/bots/api/formatting.md) for more details."
+      },
+      {
+        "name": "entities",
+        "type": "Array of [MessageEntity](/bots/api/types/messageentity.md)",
+        "required": false,
+        "description": "A JSON-serialized list of special entities that appear in message text, which can be specified instead of *parse_mode*"
+      },
+      {
+        "name": "link_preview_options",
+        "type": "[LinkPreviewOptions](/bots/api/types/linkpreviewoptions.md)",
+        "required": false,
+        "description": "Link preview generation options for the message"
+      },
+      {
+        "name": "disable_notification",
+        "type": "Boolean",
+        "required": false,
+        "description": "Sends the message [silently](https://telegram.org/blog/channels-2-0#silent-messages). Users will receive a notification with no sound."
+      },
+      {
+        "name": "protect_content",
+        "type": "Boolean",
+        "required": false,
+        "description": "Protects the contents of the sent message from forwarding and saving"
+      },
+      {
+        "name": "allow_paid_broadcast",
+        "type": "Boolean",
+        "required": false,
+        "description": "Pass *True* to allow up to 1000 messages per second, ignoring [broadcasting limits](/bots/faq.md#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance."
+      },
+      {
+        "name": "message_effect_id",
+        "type": "String",
+        "required": false,
+        "description": "Unique identifier of the message effect to be added to the message; for private chats only"
+      },
+      {
+        "name": "suggested_post_parameters",
+        "type": "[SuggestedPostParameters](/bots/api/types/suggestedpostparameters.md)",
+        "required": false,
+        "description": "A JSON-serialized object containing the parameters of the suggested post to send; for direct messages chats only. If the message is sent as a reply to another suggested post, then that suggested post is automatically declined."
+      },
+      {
+        "name": "reply_parameters",
+        "type": "[ReplyParameters](/bots/api/types/replyparameters.md)",
+        "required": false,
+        "description": "Description of the message to reply to"
+      },
+      {
+        "name": "reply_markup",
+        "type": "[InlineKeyboardMarkup](/bots/api/types/inlinekeyboardmarkup.md) or [ReplyKeyboardMarkup](/bots/api/types/replykeyboardmarkup.md) or [ReplyKeyboardRemove](/bots/api/types/replykeyboardremove.md) or [ForceReply](/bots/api/types/forcereply.md)",
+        "required": false,
+        "description": "Additional interface options. A JSON-serialized object for an [inline keyboard](/bots/features.md#inline-keyboards), [custom reply keyboard](/bots/features.md#keyboards), instructions to remove a reply keyboard or to force a reply from the user."
+      }
+    ],
+    "source": "https://core.telegram.org/bots/api#sendmessage"
+  },
+  {
+    "method": "forwardMessage",
+    "readOnly": false,
+    "scope": "channel",
+    "description": "Переслать один пост внутри канала.",
+    "required": [
+      "chat_id",
+      "from_chat_id",
+      "message_id"
+    ],
+    "allowed": [
+      "chat_id",
+      "message_thread_id",
+      "direct_messages_topic_id",
+      "from_chat_id",
+      "video_start_timestamp",
+      "disable_notification",
+      "protect_content",
+      "message_effect_id",
+      "suggested_post_parameters",
+      "message_id"
+    ],
+    "parameters": [
+      {
+        "name": "chat_id",
+        "type": "Integer or String",
+        "required": true,
+        "description": "Unique identifier for the target chat or username of the target bot, supergroup or channel in the format `@username`"
+      },
+      {
+        "name": "message_thread_id",
+        "type": "Integer",
+        "required": false,
+        "description": "Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only"
+      },
+      {
+        "name": "direct_messages_topic_id",
+        "type": "Integer",
+        "required": false,
+        "description": "Identifier of the direct messages topic to which the message will be forwarded; required if the message is forwarded to a direct messages chat"
+      },
+      {
+        "name": "from_chat_id",
+        "type": "Integer or String",
+        "required": true,
+        "description": "Unique identifier for the chat where the original message was sent (or username of the target bot, supergroup or channel in the format `@username`)"
+      },
+      {
+        "name": "video_start_timestamp",
+        "type": "Integer",
+        "required": false,
+        "description": "New start timestamp for the forwarded video in the message"
+      },
+      {
+        "name": "disable_notification",
+        "type": "Boolean",
+        "required": false,
+        "description": "Sends the message [silently](https://telegram.org/blog/channels-2-0#silent-messages). Users will receive a notification with no sound."
+      },
+      {
+        "name": "protect_content",
+        "type": "Boolean",
+        "required": false,
+        "description": "Protects the contents of the forwarded message from forwarding and saving"
+      },
+      {
+        "name": "message_effect_id",
+        "type": "String",
+        "required": false,
+        "description": "Unique identifier of the message effect to be added to the message; only available when forwarding to private chats"
+      },
+      {
+        "name": "suggested_post_parameters",
+        "type": "[SuggestedPostParameters](/bots/api/types/suggestedpostparameters.md)",
+        "required": false,
+        "description": "A JSON-serialized object containing the parameters of the suggested post to send; for direct messages chats only"
+      },
+      {
+        "name": "message_id",
+        "type": "Integer",
+        "required": true,
+        "description": "Message identifier in the chat specified in *from_chat_id*"
+      }
+    ],
+    "source": "https://core.telegram.org/bots/api#forwardmessage"
+  },
+  {
+    "method": "forwardMessages",
+    "readOnly": false,
+    "scope": "channel",
+    "description": "Переслать несколько постов внутри канала.",
+    "required": [
+      "chat_id",
+      "from_chat_id",
+      "message_ids"
+    ],
+    "allowed": [
+      "chat_id",
+      "message_thread_id",
+      "direct_messages_topic_id",
+      "from_chat_id",
+      "message_ids",
+      "disable_notification",
+      "protect_content"
+    ],
+    "parameters": [
+      {
+        "name": "chat_id",
+        "type": "Integer or String",
+        "required": true,
+        "description": "Unique identifier for the target chat or username of the target bot, supergroup or channel in the format `@username`"
+      },
+      {
+        "name": "message_thread_id",
+        "type": "Integer",
+        "required": false,
+        "description": "Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only"
+      },
+      {
+        "name": "direct_messages_topic_id",
+        "type": "Integer",
+        "required": false,
+        "description": "Identifier of the direct messages topic to which the messages will be forwarded; required if the messages are forwarded to a direct messages chat"
+      },
+      {
+        "name": "from_chat_id",
+        "type": "Integer or String",
+        "required": true,
+        "description": "Unique identifier for the chat where the original messages were sent (or username of the target bot, supergroup or channel in the format `@username`)"
+      },
+      {
+        "name": "message_ids",
+        "type": "Array of Integer",
+        "required": true,
+        "description": "A JSON-serialized list of 1-100 identifiers of messages in the chat *from_chat_id* to forward. The identifiers must be specified in a strictly increasing order."
+      },
+      {
+        "name": "disable_notification",
+        "type": "Boolean",
+        "required": false,
+        "description": "Sends the messages [silently](https://telegram.org/blog/channels-2-0#silent-messages). Users will receive a notification with no sound."
+      },
+      {
+        "name": "protect_content",
+        "type": "Boolean",
+        "required": false,
+        "description": "Protects the contents of the forwarded messages from forwarding and saving"
+      }
+    ],
+    "source": "https://core.telegram.org/bots/api#forwardmessages"
+  },
+  {
+    "method": "copyMessage",
+    "readOnly": false,
+    "scope": "channel",
+    "description": "Скопировать один пост внутри канала.",
+    "required": [
+      "chat_id",
+      "from_chat_id",
+      "message_id"
+    ],
+    "allowed": [
+      "chat_id",
+      "message_thread_id",
+      "direct_messages_topic_id",
+      "from_chat_id",
+      "message_id",
+      "video_start_timestamp",
+      "caption",
+      "parse_mode",
+      "caption_entities",
+      "show_caption_above_media",
+      "disable_notification",
+      "protect_content",
+      "allow_paid_broadcast",
+      "message_effect_id",
+      "suggested_post_parameters",
+      "reply_parameters",
+      "reply_markup"
+    ],
+    "parameters": [
+      {
+        "name": "chat_id",
+        "type": "Integer or String",
+        "required": true,
+        "description": "Unique identifier for the target chat or username of the target bot, supergroup or channel in the format `@username`"
+      },
+      {
+        "name": "message_thread_id",
+        "type": "Integer",
+        "required": false,
+        "description": "Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only"
+      },
+      {
+        "name": "direct_messages_topic_id",
+        "type": "Integer",
+        "required": false,
+        "description": "Identifier of the direct messages topic to which the message will be sent; required if the message is sent to a direct messages chat"
+      },
+      {
+        "name": "from_chat_id",
+        "type": "Integer or String",
+        "required": true,
+        "description": "Unique identifier for the chat where the original message was sent (or username of the target bot, supergroup or channel in the format `@username`)"
+      },
+      {
+        "name": "message_id",
+        "type": "Integer",
+        "required": true,
+        "description": "Message identifier in the chat specified in *from_chat_id*"
+      },
+      {
+        "name": "video_start_timestamp",
+        "type": "Integer",
+        "required": false,
+        "description": "New start timestamp for the copied video in the message"
+      },
+      {
+        "name": "caption",
+        "type": "String",
+        "required": false,
+        "description": "New caption for media, 0-1024 characters after entities parsing. If not specified, the original caption is kept."
+      },
+      {
+        "name": "parse_mode",
+        "type": "String",
+        "required": false,
+        "description": "Mode for parsing entities in the new caption. See [formatting options](/bots/api/formatting.md) for more details."
+      },
+      {
+        "name": "caption_entities",
+        "type": "Array of [MessageEntity](/bots/api/types/messageentity.md)",
+        "required": false,
+        "description": "A JSON-serialized list of special entities that appear in the new caption, which can be specified instead of *parse_mode*"
+      },
+      {
+        "name": "show_caption_above_media",
+        "type": "Boolean",
+        "required": false,
+        "description": "Pass *True* if the caption must be shown above the message media. Ignored if a new caption isn't specified."
+      },
+      {
+        "name": "disable_notification",
+        "type": "Boolean",
+        "required": false,
+        "description": "Sends the message [silently](https://telegram.org/blog/channels-2-0#silent-messages). Users will receive a notification with no sound."
+      },
+      {
+        "name": "protect_content",
+        "type": "Boolean",
+        "required": false,
+        "description": "Protects the contents of the sent message from forwarding and saving"
+      },
+      {
+        "name": "allow_paid_broadcast",
+        "type": "Boolean",
+        "required": false,
+        "description": "Pass *True* to allow up to 1000 messages per second, ignoring [broadcasting limits](/bots/faq.md#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance."
+      },
+      {
+        "name": "message_effect_id",
+        "type": "String",
+        "required": false,
+        "description": "Unique identifier of the message effect to be added to the message; only available when copying to private chats"
+      },
+      {
+        "name": "suggested_post_parameters",
+        "type": "[SuggestedPostParameters](/bots/api/types/suggestedpostparameters.md)",
+        "required": false,
+        "description": "A JSON-serialized object containing the parameters of the suggested post to send; for direct messages chats only. If the message is sent as a reply to another suggested post, then that suggested post is automatically declined."
+      },
+      {
+        "name": "reply_parameters",
+        "type": "[ReplyParameters](/bots/api/types/replyparameters.md)",
+        "required": false,
+        "description": "Description of the message to reply to"
+      },
+      {
+        "name": "reply_markup",
+        "type": "[InlineKeyboardMarkup](/bots/api/types/inlinekeyboardmarkup.md) or [ReplyKeyboardMarkup](/bots/api/types/replykeyboardmarkup.md) or [ReplyKeyboardRemove](/bots/api/types/replykeyboardremove.md) or [ForceReply](/bots/api/types/forcereply.md)",
+        "required": false,
+        "description": "Additional interface options. A JSON-serialized object for an [inline keyboard](/bots/features.md#inline-keyboards), [custom reply keyboard](/bots/features.md#keyboards), instructions to remove a reply keyboard or to force a reply from the user."
+      }
+    ],
+    "source": "https://core.telegram.org/bots/api#copymessage"
+  },
+  {
+    "method": "copyMessages",
+    "readOnly": false,
+    "scope": "channel",
+    "description": "Скопировать несколько постов внутри канала.",
+    "required": [
+      "chat_id",
+      "from_chat_id",
+      "message_ids"
+    ],
+    "allowed": [
+      "chat_id",
+      "message_thread_id",
+      "direct_messages_topic_id",
+      "from_chat_id",
+      "message_ids",
+      "disable_notification",
+      "protect_content",
+      "remove_caption"
+    ],
+    "parameters": [
+      {
+        "name": "chat_id",
+        "type": "Integer or String",
+        "required": true,
+        "description": "Unique identifier for the target chat or username of the target bot, supergroup or channel in the format `@username`"
+      },
+      {
+        "name": "message_thread_id",
+        "type": "Integer",
+        "required": false,
+        "description": "Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only"
+      },
+      {
+        "name": "direct_messages_topic_id",
+        "type": "Integer",
+        "required": false,
+        "description": "Identifier of the direct messages topic to which the messages will be sent; required if the messages are sent to a direct messages chat"
+      },
+      {
+        "name": "from_chat_id",
+        "type": "Integer or String",
+        "required": true,
+        "description": "Unique identifier for the chat where the original messages were sent (or username of the target bot, supergroup or channel in the format `@username`)"
+      },
+      {
+        "name": "message_ids",
+        "type": "Array of Integer",
+        "required": true,
+        "description": "A JSON-serialized list of 1-100 identifiers of messages in the chat *from_chat_id* to copy. The identifiers must be specified in a strictly increasing order."
+      },
+      {
+        "name": "disable_notification",
+        "type": "Boolean",
+        "required": false,
+        "description": "Sends the messages [silently](https://telegram.org/blog/channels-2-0#silent-messages). Users will receive a notification with no sound."
+      },
+      {
+        "name": "protect_content",
+        "type": "Boolean",
+        "required": false,
+        "description": "Protects the contents of the sent messages from forwarding and saving"
+      },
+      {
+        "name": "remove_caption",
+        "type": "Boolean",
+        "required": false,
+        "description": "Pass *True* to copy the messages without their captions"
+      }
+    ],
+    "source": "https://core.telegram.org/bots/api#copymessages"
+  },
+  {
+    "method": "sendPhoto",
+    "readOnly": false,
+    "scope": "channel",
+    "description": "Опубликовать фото с подписью.",
+    "required": [
+      "chat_id",
+      "photo"
+    ],
+    "allowed": [
+      "business_connection_id",
+      "chat_id",
+      "message_thread_id",
+      "direct_messages_topic_id",
+      "ephemeral_message_parameters",
+      "photo",
+      "caption",
+      "parse_mode",
+      "caption_entities",
+      "show_caption_above_media",
+      "has_spoiler",
+      "disable_notification",
+      "protect_content",
+      "allow_paid_broadcast",
+      "message_effect_id",
+      "suggested_post_parameters",
+      "reply_parameters",
+      "reply_markup"
+    ],
+    "parameters": [
+      {
+        "name": "business_connection_id",
+        "type": "String",
+        "required": false,
+        "description": "Unique identifier of the business connection on behalf of which the message will be sent"
+      },
+      {
+        "name": "chat_id",
+        "type": "Integer or String",
+        "required": true,
+        "description": "Unique identifier for the target chat or username of the target bot, supergroup or channel in the format `@username`"
+      },
+      {
+        "name": "message_thread_id",
+        "type": "Integer",
+        "required": false,
+        "description": "Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only"
+      },
+      {
+        "name": "direct_messages_topic_id",
+        "type": "Integer",
+        "required": false,
+        "description": "Identifier of the direct messages topic to which the message will be sent; required if the message is sent to a direct messages chat"
+      },
+      {
+        "name": "ephemeral_message_parameters",
+        "type": "[EphemeralMessageParameters](/bots/api/types/ephemeralmessageparameters.md)",
+        "required": false,
+        "description": "A JSON-serialized object containing the parameters of the ephemeral message to send"
+      },
+      {
+        "name": "photo",
+        "type": "[InputFile](/bots/api/types/inputfile.md) or String",
+        "required": true,
+        "description": "Photo to send. Pass a file_id as String to send a photo that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get a photo from the Internet, or upload a new photo using multipart/form-data. The photo must be at most 10 MB in size. The photo's width and height must not exceed 10000 in total. Width and height ratio must be at most 20. [More information on Sending Files »](/bots/api.md#sending-files)"
+      },
+      {
+        "name": "caption",
+        "type": "String",
+        "required": false,
+        "description": "Photo caption (may also be used when resending photos by *file_id*), 0-1024 characters after entities parsing"
+      },
+      {
+        "name": "parse_mode",
+        "type": "String",
+        "required": false,
+        "description": "Mode for parsing entities in the photo caption. See [formatting options](/bots/api/formatting.md) for more details."
+      },
+      {
+        "name": "caption_entities",
+        "type": "Array of [MessageEntity](/bots/api/types/messageentity.md)",
+        "required": false,
+        "description": "A JSON-serialized list of special entities that appear in the caption, which can be specified instead of *parse_mode*"
+      },
+      {
+        "name": "show_caption_above_media",
+        "type": "Boolean",
+        "required": false,
+        "description": "Pass *True* if the caption must be shown above the message media"
+      },
+      {
+        "name": "has_spoiler",
+        "type": "Boolean",
+        "required": false,
+        "description": "Pass *True* if the photo needs to be covered with a spoiler animation"
+      },
+      {
+        "name": "disable_notification",
+        "type": "Boolean",
+        "required": false,
+        "description": "Sends the message [silently](https://telegram.org/blog/channels-2-0#silent-messages). Users will receive a notification with no sound."
+      },
+      {
+        "name": "protect_content",
+        "type": "Boolean",
+        "required": false,
+        "description": "Protects the contents of the sent message from forwarding and saving"
+      },
+      {
+        "name": "allow_paid_broadcast",
+        "type": "Boolean",
+        "required": false,
+        "description": "Pass *True* to allow up to 1000 messages per second, ignoring [broadcasting limits](/bots/faq.md#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance."
+      },
+      {
+        "name": "message_effect_id",
+        "type": "String",
+        "required": false,
+        "description": "Unique identifier of the message effect to be added to the message; for private chats only"
+      },
+      {
+        "name": "suggested_post_parameters",
+        "type": "[SuggestedPostParameters](/bots/api/types/suggestedpostparameters.md)",
+        "required": false,
+        "description": "A JSON-serialized object containing the parameters of the suggested post to send; for direct messages chats only. If the message is sent as a reply to another suggested post, then that suggested post is automatically declined."
+      },
+      {
+        "name": "reply_parameters",
+        "type": "[ReplyParameters](/bots/api/types/replyparameters.md)",
+        "required": false,
+        "description": "Description of the message to reply to"
+      },
+      {
+        "name": "reply_markup",
+        "type": "[InlineKeyboardMarkup](/bots/api/types/inlinekeyboardmarkup.md) or [ReplyKeyboardMarkup](/bots/api/types/replykeyboardmarkup.md) or [ReplyKeyboardRemove](/bots/api/types/replykeyboardremove.md) or [ForceReply](/bots/api/types/forcereply.md)",
+        "required": false,
+        "description": "Additional interface options. A JSON-serialized object for an [inline keyboard](/bots/features.md#inline-keyboards), [custom reply keyboard](/bots/features.md#keyboards), instructions to remove a reply keyboard or to force a reply from the user."
+      }
+    ],
+    "source": "https://core.telegram.org/bots/api#sendphoto"
+  },
+  {
+    "method": "sendLivePhoto",
+    "readOnly": false,
+    "scope": "channel",
+    "description": "Опубликовать живое фото.",
+    "required": [
+      "chat_id",
+      "live_photo",
+      "photo"
+    ],
+    "allowed": [
+      "business_connection_id",
+      "chat_id",
+      "message_thread_id",
+      "direct_messages_topic_id",
+      "ephemeral_message_parameters",
+      "live_photo",
+      "photo",
+      "caption",
+      "parse_mode",
+      "caption_entities",
+      "show_caption_above_media",
+      "has_spoiler",
+      "disable_notification",
+      "protect_content",
+      "allow_paid_broadcast",
+      "message_effect_id",
+      "suggested_post_parameters",
+      "reply_parameters",
+      "reply_markup"
+    ],
+    "parameters": [
+      {
+        "name": "business_connection_id",
+        "type": "String",
+        "required": false,
+        "description": "Unique identifier of the business connection on behalf of which the message will be sent"
+      },
+      {
+        "name": "chat_id",
+        "type": "Integer or String",
+        "required": true,
+        "description": "Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)"
+      },
+      {
+        "name": "message_thread_id",
+        "type": "Integer",
+        "required": false,
+        "description": "Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only"
+      },
+      {
+        "name": "direct_messages_topic_id",
+        "type": "Integer",
+        "required": false,
+        "description": "Identifier of the direct messages topic to which the message will be sent; required if the message is sent to a direct messages chat"
+      },
+      {
+        "name": "ephemeral_message_parameters",
+        "type": "[EphemeralMessageParameters](/bots/api/types/ephemeralmessageparameters.md)",
+        "required": false,
+        "description": "A JSON-serialized object containing the parameters of the ephemeral message to send"
+      },
+      {
+        "name": "live_photo",
+        "type": "[InputFile](/bots/api/types/inputfile.md) or String",
+        "required": true,
+        "description": "Live photo video to send. The video must be no longer than 10 seconds and must not exceed 10 MB in size. Pass a file_id as String to send a video that exists on the Telegram servers (recommended) or upload a new video using multipart/form-data. [More information on Sending Files »](/bots/api.md#sending-files). Sending live photos by a URL is currently unsupported."
+      },
+      {
+        "name": "photo",
+        "type": "[InputFile](/bots/api/types/inputfile.md) or String",
+        "required": true,
+        "description": "The static photo to send. Pass a file_id as String to send a photo that exists on the Telegram servers (recommended) or upload a new video using multipart/form-data. [More information on Sending Files »](/bots/api.md#sending-files). Sending live photos by a URL is currently unsupported."
+      },
+      {
+        "name": "caption",
+        "type": "String",
+        "required": false,
+        "description": "Video caption (may also be used when resending videos by *file_id*), 0-1024 characters after entities parsing"
+      },
+      {
+        "name": "parse_mode",
+        "type": "String",
+        "required": false,
+        "description": "Mode for parsing entities in the video caption. See [formatting options](/bots/api/formatting.md) for more details."
+      },
+      {
+        "name": "caption_entities",
+        "type": "Array of [MessageEntity](/bots/api/types/messageentity.md)",
+        "required": false,
+        "description": "A JSON-serialized list of special entities that appear in the caption, which can be specified instead of *parse_mode*"
+      },
+      {
+        "name": "show_caption_above_media",
+        "type": "Boolean",
+        "required": false,
+        "description": "Pass *True* if the caption must be shown above the message media"
+      },
+      {
+        "name": "has_spoiler",
+        "type": "Boolean",
+        "required": false,
+        "description": "Pass *True* if the video needs to be covered with a spoiler animation"
+      },
+      {
+        "name": "disable_notification",
+        "type": "Boolean",
+        "required": false,
+        "description": "Sends the message [silently](https://telegram.org/blog/channels-2-0#silent-messages). Users will receive a notification with no sound."
+      },
+      {
+        "name": "protect_content",
+        "type": "Boolean",
+        "required": false,
+        "description": "Protects the contents of the sent message from forwarding and saving"
+      },
+      {
+        "name": "allow_paid_broadcast",
+        "type": "Boolean",
+        "required": false,
+        "description": "Pass *True* to allow up to 1000 messages per second, ignoring [broadcasting limits](/bots/faq.md#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance."
+      },
+      {
+        "name": "message_effect_id",
+        "type": "String",
+        "required": false,
+        "description": "Unique identifier of the message effect to be added to the message; for private chats only"
+      },
+      {
+        "name": "suggested_post_parameters",
+        "type": "[SuggestedPostParameters](/bots/api/types/suggestedpostparameters.md)",
+        "required": false,
+        "description": "A JSON-serialized object containing the parameters of the suggested post to send; for direct messages chats only. If the message is sent as a reply to another suggested post, then that suggested post is automatically declined."
+      },
+      {
+        "name": "reply_parameters",
+        "type": "[ReplyParameters](/bots/api/types/replyparameters.md)",
+        "required": false,
+        "description": "Description of the message to reply to"
+      },
+      {
+        "name": "reply_markup",
+        "type": "[InlineKeyboardMarkup](/bots/api/types/inlinekeyboardmarkup.md) or [ReplyKeyboardMarkup](/bots/api/types/replykeyboardmarkup.md) or [ReplyKeyboardRemove](/bots/api/types/replykeyboardremove.md) or [ForceReply](/bots/api/types/forcereply.md)",
+        "required": false,
+        "description": "Additional interface options. A JSON-serialized object for an [inline keyboard](/bots/features.md#inline-keyboards), [custom reply keyboard](/bots/features.md#keyboards), instructions to remove a reply keyboard or to force a reply from the user."
+      }
+    ],
+    "source": "https://core.telegram.org/bots/api#sendlivephoto"
+  },
+  {
+    "method": "sendAudio",
+    "readOnly": false,
+    "scope": "channel",
+    "description": "Опубликовать аудиозапись.",
+    "required": [
+      "chat_id",
+      "audio"
+    ],
+    "allowed": [
+      "business_connection_id",
+      "chat_id",
+      "message_thread_id",
+      "direct_messages_topic_id",
+      "ephemeral_message_parameters",
+      "audio",
+      "caption",
+      "parse_mode",
+      "caption_entities",
+      "duration",
+      "performer",
+      "title",
+      "thumbnail",
+      "disable_notification",
+      "protect_content",
+      "allow_paid_broadcast",
+      "message_effect_id",
+      "suggested_post_parameters",
+      "reply_parameters",
+      "reply_markup"
+    ],
+    "parameters": [
+      {
+        "name": "business_connection_id",
+        "type": "String",
+        "required": false,
+        "description": "Unique identifier of the business connection on behalf of which the message will be sent"
+      },
+      {
+        "name": "chat_id",
+        "type": "Integer or String",
+        "required": true,
+        "description": "Unique identifier for the target chat or username of the target bot, supergroup or channel in the format `@username`"
+      },
+      {
+        "name": "message_thread_id",
+        "type": "Integer",
+        "required": false,
+        "description": "Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only"
+      },
+      {
+        "name": "direct_messages_topic_id",
+        "type": "Integer",
+        "required": false,
+        "description": "Identifier of the direct messages topic to which the message will be sent; required if the message is sent to a direct messages chat"
+      },
+      {
+        "name": "ephemeral_message_parameters",
+        "type": "[EphemeralMessageParameters](/bots/api/types/ephemeralmessageparameters.md)",
+        "required": false,
+        "description": "A JSON-serialized object containing the parameters of the ephemeral message to send"
+      },
+      {
+        "name": "audio",
+        "type": "[InputFile](/bots/api/types/inputfile.md) or String",
+        "required": true,
+        "description": "Audio file to send. Pass a file_id as String to send an audio file that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get an audio file from the Internet, or upload a new one using multipart/form-data. [More information on Sending Files »](/bots/api.md#sending-files)"
+      },
+      {
+        "name": "caption",
+        "type": "String",
+        "required": false,
+        "description": "Audio caption, 0-1024 characters after entities parsing"
+      },
+      {
+        "name": "parse_mode",
+        "type": "String",
+        "required": false,
+        "description": "Mode for parsing entities in the audio caption. See [formatting options](/bots/api/formatting.md) for more details."
+      },
+      {
+        "name": "caption_entities",
+        "type": "Array of [MessageEntity](/bots/api/types/messageentity.md)",
+        "required": false,
+        "description": "A JSON-serialized list of special entities that appear in the caption, which can be specified instead of *parse_mode*"
+      },
+      {
+        "name": "duration",
+        "type": "Integer",
+        "required": false,
+        "description": "Duration of the audio in seconds"
+      },
+      {
+        "name": "performer",
+        "type": "String",
+        "required": false,
+        "description": "Performer"
+      },
+      {
+        "name": "title",
+        "type": "String",
+        "required": false,
+        "description": "Track name"
+      },
+      {
+        "name": "thumbnail",
+        "type": "[InputFile](/bots/api/types/inputfile.md) or String",
+        "required": false,
+        "description": "Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new file, so you can pass \"attach://&lt;file_attach_name&gt;\" if the thumbnail was uploaded using multipart/form-data under &lt;file_attach_name&gt;. [More information on Sending Files »](/bots/api.md#sending-files)"
+      },
+      {
+        "name": "disable_notification",
+        "type": "Boolean",
+        "required": false,
+        "description": "Sends the message [silently](https://telegram.org/blog/channels-2-0#silent-messages). Users will receive a notification with no sound."
+      },
+      {
+        "name": "protect_content",
+        "type": "Boolean",
+        "required": false,
+        "description": "Protects the contents of the sent message from forwarding and saving"
+      },
+      {
+        "name": "allow_paid_broadcast",
+        "type": "Boolean",
+        "required": false,
+        "description": "Pass *True* to allow up to 1000 messages per second, ignoring [broadcasting limits](/bots/faq.md#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance."
+      },
+      {
+        "name": "message_effect_id",
+        "type": "String",
+        "required": false,
+        "description": "Unique identifier of the message effect to be added to the message; for private chats only"
+      },
+      {
+        "name": "suggested_post_parameters",
+        "type": "[SuggestedPostParameters](/bots/api/types/suggestedpostparameters.md)",
+        "required": false,
+        "description": "A JSON-serialized object containing the parameters of the suggested post to send; for direct messages chats only. If the message is sent as a reply to another suggested post, then that suggested post is automatically declined."
+      },
+      {
+        "name": "reply_parameters",
+        "type": "[ReplyParameters](/bots/api/types/replyparameters.md)",
+        "required": false,
+        "description": "Description of the message to reply to"
+      },
+      {
+        "name": "reply_markup",
+        "type": "[InlineKeyboardMarkup](/bots/api/types/inlinekeyboardmarkup.md) or [ReplyKeyboardMarkup](/bots/api/types/replykeyboardmarkup.md) or [ReplyKeyboardRemove](/bots/api/types/replykeyboardremove.md) or [ForceReply](/bots/api/types/forcereply.md)",
+        "required": false,
+        "description": "Additional interface options. A JSON-serialized object for an [inline keyboard](/bots/features.md#inline-keyboards), [custom reply keyboard](/bots/features.md#keyboards), instructions to remove a reply keyboard or to force a reply from the user."
+      }
+    ],
+    "source": "https://core.telegram.org/bots/api#sendaudio"
+  },
+  {
+    "method": "sendDocument",
+    "readOnly": false,
+    "scope": "channel",
+    "description": "Опубликовать файл.",
+    "required": [
+      "chat_id",
+      "document"
+    ],
+    "allowed": [
+      "business_connection_id",
+      "chat_id",
+      "message_thread_id",
+      "direct_messages_topic_id",
+      "ephemeral_message_parameters",
+      "document",
+      "thumbnail",
+      "caption",
+      "parse_mode",
+      "caption_entities",
+      "disable_content_type_detection",
+      "disable_notification",
+      "protect_content",
+      "allow_paid_broadcast",
+      "message_effect_id",
+      "suggested_post_parameters",
+      "reply_parameters",
+      "reply_markup"
+    ],
+    "parameters": [
+      {
+        "name": "business_connection_id",
+        "type": "String",
+        "required": false,
+        "description": "Unique identifier of the business connection on behalf of which the message will be sent"
+      },
+      {
+        "name": "chat_id",
+        "type": "Integer or String",
+        "required": true,
+        "description": "Unique identifier for the target chat or username of the target bot, supergroup or channel in the format `@username`"
+      },
+      {
+        "name": "message_thread_id",
+        "type": "Integer",
+        "required": false,
+        "description": "Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only"
+      },
+      {
+        "name": "direct_messages_topic_id",
+        "type": "Integer",
+        "required": false,
+        "description": "Identifier of the direct messages topic to which the message will be sent; required if the message is sent to a direct messages chat"
+      },
+      {
+        "name": "ephemeral_message_parameters",
+        "type": "[EphemeralMessageParameters](/bots/api/types/ephemeralmessageparameters.md)",
+        "required": false,
+        "description": "A JSON-serialized object containing the parameters of the ephemeral message to send"
+      },
+      {
+        "name": "document",
+        "type": "[InputFile](/bots/api/types/inputfile.md) or String",
+        "required": true,
+        "description": "File to send. Pass a file_id as String to send a file that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get a file from the Internet, or upload a new one using multipart/form-data. [More information on Sending Files »](/bots/api.md#sending-files)"
+      },
+      {
+        "name": "thumbnail",
+        "type": "[InputFile](/bots/api/types/inputfile.md) or String",
+        "required": false,
+        "description": "Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new file, so you can pass \"attach://&lt;file_attach_name&gt;\" if the thumbnail was uploaded using multipart/form-data under &lt;file_attach_name&gt;. [More information on Sending Files »](/bots/api.md#sending-files)"
+      },
+      {
+        "name": "caption",
+        "type": "String",
+        "required": false,
+        "description": "Document caption (may also be used when resending documents by *file_id*), 0-1024 characters after entities parsing"
+      },
+      {
+        "name": "parse_mode",
+        "type": "String",
+        "required": false,
+        "description": "Mode for parsing entities in the document caption. See [formatting options](/bots/api/formatting.md) for more details."
+      },
+      {
+        "name": "caption_entities",
+        "type": "Array of [MessageEntity](/bots/api/types/messageentity.md)",
+        "required": false,
+        "description": "A JSON-serialized list of special entities that appear in the caption, which can be specified instead of *parse_mode*"
+      },
+      {
+        "name": "disable_content_type_detection",
+        "type": "Boolean",
+        "required": false,
+        "description": "Disables automatic server-side content type detection for files uploaded using multipart/form-data"
+      },
+      {
+        "name": "disable_notification",
+        "type": "Boolean",
+        "required": false,
+        "description": "Sends the message [silently](https://telegram.org/blog/channels-2-0#silent-messages). Users will receive a notification with no sound."
+      },
+      {
+        "name": "protect_content",
+        "type": "Boolean",
+        "required": false,
+        "description": "Protects the contents of the sent message from forwarding and saving"
+      },
+      {
+        "name": "allow_paid_broadcast",
+        "type": "Boolean",
+        "required": false,
+        "description": "Pass *True* to allow up to 1000 messages per second, ignoring [broadcasting limits](/bots/faq.md#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance."
+      },
+      {
+        "name": "message_effect_id",
+        "type": "String",
+        "required": false,
+        "description": "Unique identifier of the message effect to be added to the message; for private chats only"
+      },
+      {
+        "name": "suggested_post_parameters",
+        "type": "[SuggestedPostParameters](/bots/api/types/suggestedpostparameters.md)",
+        "required": false,
+        "description": "A JSON-serialized object containing the parameters of the suggested post to send; for direct messages chats only. If the message is sent as a reply to another suggested post, then that suggested post is automatically declined."
+      },
+      {
+        "name": "reply_parameters",
+        "type": "[ReplyParameters](/bots/api/types/replyparameters.md)",
+        "required": false,
+        "description": "Description of the message to reply to"
+      },
+      {
+        "name": "reply_markup",
+        "type": "[InlineKeyboardMarkup](/bots/api/types/inlinekeyboardmarkup.md) or [ReplyKeyboardMarkup](/bots/api/types/replykeyboardmarkup.md) or [ReplyKeyboardRemove](/bots/api/types/replykeyboardremove.md) or [ForceReply](/bots/api/types/forcereply.md)",
+        "required": false,
+        "description": "Additional interface options. A JSON-serialized object for an [inline keyboard](/bots/features.md#inline-keyboards), [custom reply keyboard](/bots/features.md#keyboards), instructions to remove a reply keyboard or to force a reply from the user."
+      }
+    ],
+    "source": "https://core.telegram.org/bots/api#senddocument"
+  },
+  {
+    "method": "sendVideo",
+    "readOnly": false,
+    "scope": "channel",
+    "description": "Опубликовать видео.",
+    "required": [
+      "chat_id",
+      "video"
+    ],
+    "allowed": [
+      "business_connection_id",
+      "chat_id",
+      "message_thread_id",
+      "direct_messages_topic_id",
+      "ephemeral_message_parameters",
+      "video",
+      "duration",
+      "width",
+      "height",
+      "thumbnail",
+      "cover",
+      "start_timestamp",
+      "caption",
+      "parse_mode",
+      "caption_entities",
+      "show_caption_above_media",
+      "has_spoiler",
+      "supports_streaming",
+      "disable_notification",
+      "protect_content",
+      "allow_paid_broadcast",
+      "message_effect_id",
+      "suggested_post_parameters",
+      "reply_parameters",
+      "reply_markup"
+    ],
+    "parameters": [
+      {
+        "name": "business_connection_id",
+        "type": "String",
+        "required": false,
+        "description": "Unique identifier of the business connection on behalf of which the message will be sent"
+      },
+      {
+        "name": "chat_id",
+        "type": "Integer or String",
+        "required": true,
+        "description": "Unique identifier for the target chat or username of the target bot, supergroup or channel in the format `@username`"
+      },
+      {
+        "name": "message_thread_id",
+        "type": "Integer",
+        "required": false,
+        "description": "Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only"
+      },
+      {
+        "name": "direct_messages_topic_id",
+        "type": "Integer",
+        "required": false,
+        "description": "Identifier of the direct messages topic to which the message will be sent; required if the message is sent to a direct messages chat"
+      },
+      {
+        "name": "ephemeral_message_parameters",
+        "type": "[EphemeralMessageParameters](/bots/api/types/ephemeralmessageparameters.md)",
+        "required": false,
+        "description": "A JSON-serialized object containing the parameters of the ephemeral message to send"
+      },
+      {
+        "name": "video",
+        "type": "[InputFile](/bots/api/types/inputfile.md) or String",
+        "required": true,
+        "description": "Video to send. Pass a file_id as String to send a video that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get a video from the Internet, or upload a new video using multipart/form-data. [More information on Sending Files »](/bots/api.md#sending-files)"
+      },
+      {
+        "name": "duration",
+        "type": "Integer",
+        "required": false,
+        "description": "Duration of sent video in seconds"
+      },
+      {
+        "name": "width",
+        "type": "Integer",
+        "required": false,
+        "description": "Video width"
+      },
+      {
+        "name": "height",
+        "type": "Integer",
+        "required": false,
+        "description": "Video height"
+      },
+      {
+        "name": "thumbnail",
+        "type": "[InputFile](/bots/api/types/inputfile.md) or String",
+        "required": false,
+        "description": "Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new file, so you can pass \"attach://&lt;file_attach_name&gt;\" if the thumbnail was uploaded using multipart/form-data under &lt;file_attach_name&gt;. [More information on Sending Files »](/bots/api.md#sending-files)"
+      },
+      {
+        "name": "cover",
+        "type": "[InputFile](/bots/api/types/inputfile.md) or String",
+        "required": false,
+        "description": "Cover for the video in the message. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass \"attach://&lt;file_attach_name&gt;\" to upload a new one using multipart/form-data under &lt;file_attach_name&gt; name. [More information on Sending Files »](/bots/api.md#sending-files)"
+      },
+      {
+        "name": "start_timestamp",
+        "type": "Integer",
+        "required": false,
+        "description": "Start timestamp for the video in the message"
+      },
+      {
+        "name": "caption",
+        "type": "String",
+        "required": false,
+        "description": "Video caption (may also be used when resending videos by *file_id*), 0-1024 characters after entities parsing"
+      },
+      {
+        "name": "parse_mode",
+        "type": "String",
+        "required": false,
+        "description": "Mode for parsing entities in the video caption. See [formatting options](/bots/api/formatting.md) for more details."
+      },
+      {
+        "name": "caption_entities",
+        "type": "Array of [MessageEntity](/bots/api/types/messageentity.md)",
+        "required": false,
+        "description": "A JSON-serialized list of special entities that appear in the caption, which can be specified instead of *parse_mode*"
+      },
+      {
+        "name": "show_caption_above_media",
+        "type": "Boolean",
+        "required": false,
+        "description": "Pass *True* if the caption must be shown above the message media"
+      },
+      {
+        "name": "has_spoiler",
+        "type": "Boolean",
+        "required": false,
+        "description": "Pass *True* if the video needs to be covered with a spoiler animation"
+      },
+      {
+        "name": "supports_streaming",
+        "type": "Boolean",
+        "required": false,
+        "description": "Pass *True* if the uploaded video is suitable for streaming"
+      },
+      {
+        "name": "disable_notification",
+        "type": "Boolean",
+        "required": false,
+        "description": "Sends the message [silently](https://telegram.org/blog/channels-2-0#silent-messages). Users will receive a notification with no sound."
+      },
+      {
+        "name": "protect_content",
+        "type": "Boolean",
+        "required": false,
+        "description": "Protects the contents of the sent message from forwarding and saving"
+      },
+      {
+        "name": "allow_paid_broadcast",
+        "type": "Boolean",
+        "required": false,
+        "description": "Pass *True* to allow up to 1000 messages per second, ignoring [broadcasting limits](/bots/faq.md#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance."
+      },
+      {
+        "name": "message_effect_id",
+        "type": "String",
+        "required": false,
+        "description": "Unique identifier of the message effect to be added to the message; for private chats only"
+      },
+      {
+        "name": "suggested_post_parameters",
+        "type": "[SuggestedPostParameters](/bots/api/types/suggestedpostparameters.md)",
+        "required": false,
+        "description": "A JSON-serialized object containing the parameters of the suggested post to send; for direct messages chats only. If the message is sent as a reply to another suggested post, then that suggested post is automatically declined."
+      },
+      {
+        "name": "reply_parameters",
+        "type": "[ReplyParameters](/bots/api/types/replyparameters.md)",
+        "required": false,
+        "description": "Description of the message to reply to"
+      },
+      {
+        "name": "reply_markup",
+        "type": "[InlineKeyboardMarkup](/bots/api/types/inlinekeyboardmarkup.md) or [ReplyKeyboardMarkup](/bots/api/types/replykeyboardmarkup.md) or [ReplyKeyboardRemove](/bots/api/types/replykeyboardremove.md) or [ForceReply](/bots/api/types/forcereply.md)",
+        "required": false,
+        "description": "Additional interface options. A JSON-serialized object for an [inline keyboard](/bots/features.md#inline-keyboards), [custom reply keyboard](/bots/features.md#keyboards), instructions to remove a reply keyboard or to force a reply from the user."
+      }
+    ],
+    "source": "https://core.telegram.org/bots/api#sendvideo"
+  },
+  {
+    "method": "sendAnimation",
+    "readOnly": false,
+    "scope": "channel",
+    "description": "Опубликовать анимацию.",
+    "required": [
+      "chat_id",
+      "animation"
+    ],
+    "allowed": [
+      "business_connection_id",
+      "chat_id",
+      "message_thread_id",
+      "direct_messages_topic_id",
+      "ephemeral_message_parameters",
+      "animation",
+      "duration",
+      "width",
+      "height",
+      "thumbnail",
+      "caption",
+      "parse_mode",
+      "caption_entities",
+      "show_caption_above_media",
+      "has_spoiler",
+      "disable_notification",
+      "protect_content",
+      "allow_paid_broadcast",
+      "message_effect_id",
+      "suggested_post_parameters",
+      "reply_parameters",
+      "reply_markup"
+    ],
+    "parameters": [
+      {
+        "name": "business_connection_id",
+        "type": "String",
+        "required": false,
+        "description": "Unique identifier of the business connection on behalf of which the message will be sent"
+      },
+      {
+        "name": "chat_id",
+        "type": "Integer or String",
+        "required": true,
+        "description": "Unique identifier for the target chat or username of the target bot, supergroup or channel in the format `@username`"
+      },
+      {
+        "name": "message_thread_id",
+        "type": "Integer",
+        "required": false,
+        "description": "Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only"
+      },
+      {
+        "name": "direct_messages_topic_id",
+        "type": "Integer",
+        "required": false,
+        "description": "Identifier of the direct messages topic to which the message will be sent; required if the message is sent to a direct messages chat"
+      },
+      {
+        "name": "ephemeral_message_parameters",
+        "type": "[EphemeralMessageParameters](/bots/api/types/ephemeralmessageparameters.md)",
+        "required": false,
+        "description": "A JSON-serialized object containing the parameters of the ephemeral message to send"
+      },
+      {
+        "name": "animation",
+        "type": "[InputFile](/bots/api/types/inputfile.md) or String",
+        "required": true,
+        "description": "Animation to send. Pass a file_id as String to send an animation that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get an animation from the Internet, or upload a new animation using multipart/form-data. [More information on Sending Files »](/bots/api.md#sending-files)"
+      },
+      {
+        "name": "duration",
+        "type": "Integer",
+        "required": false,
+        "description": "Duration of sent animation in seconds"
+      },
+      {
+        "name": "width",
+        "type": "Integer",
+        "required": false,
+        "description": "Animation width"
+      },
+      {
+        "name": "height",
+        "type": "Integer",
+        "required": false,
+        "description": "Animation height"
+      },
+      {
+        "name": "thumbnail",
+        "type": "[InputFile](/bots/api/types/inputfile.md) or String",
+        "required": false,
+        "description": "Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new file, so you can pass \"attach://&lt;file_attach_name&gt;\" if the thumbnail was uploaded using multipart/form-data under &lt;file_attach_name&gt;. [More information on Sending Files »](/bots/api.md#sending-files)"
+      },
+      {
+        "name": "caption",
+        "type": "String",
+        "required": false,
+        "description": "Animation caption (may also be used when resending animation by *file_id*), 0-1024 characters after entities parsing"
+      },
+      {
+        "name": "parse_mode",
+        "type": "String",
+        "required": false,
+        "description": "Mode for parsing entities in the animation caption. See [formatting options](/bots/api/formatting.md) for more details."
+      },
+      {
+        "name": "caption_entities",
+        "type": "Array of [MessageEntity](/bots/api/types/messageentity.md)",
+        "required": false,
+        "description": "A JSON-serialized list of special entities that appear in the caption, which can be specified instead of *parse_mode*"
+      },
+      {
+        "name": "show_caption_above_media",
+        "type": "Boolean",
+        "required": false,
+        "description": "Pass *True* if the caption must be shown above the message media"
+      },
+      {
+        "name": "has_spoiler",
+        "type": "Boolean",
+        "required": false,
+        "description": "Pass *True* if the animation needs to be covered with a spoiler animation"
+      },
+      {
+        "name": "disable_notification",
+        "type": "Boolean",
+        "required": false,
+        "description": "Sends the message [silently](https://telegram.org/blog/channels-2-0#silent-messages). Users will receive a notification with no sound."
+      },
+      {
+        "name": "protect_content",
+        "type": "Boolean",
+        "required": false,
+        "description": "Protects the contents of the sent message from forwarding and saving"
+      },
+      {
+        "name": "allow_paid_broadcast",
+        "type": "Boolean",
+        "required": false,
+        "description": "Pass *True* to allow up to 1000 messages per second, ignoring [broadcasting limits](/bots/faq.md#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance."
+      },
+      {
+        "name": "message_effect_id",
+        "type": "String",
+        "required": false,
+        "description": "Unique identifier of the message effect to be added to the message; for private chats only"
+      },
+      {
+        "name": "suggested_post_parameters",
+        "type": "[SuggestedPostParameters](/bots/api/types/suggestedpostparameters.md)",
+        "required": false,
+        "description": "A JSON-serialized object containing the parameters of the suggested post to send; for direct messages chats only. If the message is sent as a reply to another suggested post, then that suggested post is automatically declined."
+      },
+      {
+        "name": "reply_parameters",
+        "type": "[ReplyParameters](/bots/api/types/replyparameters.md)",
+        "required": false,
+        "description": "Description of the message to reply to"
+      },
+      {
+        "name": "reply_markup",
+        "type": "[InlineKeyboardMarkup](/bots/api/types/inlinekeyboardmarkup.md) or [ReplyKeyboardMarkup](/bots/api/types/replykeyboardmarkup.md) or [ReplyKeyboardRemove](/bots/api/types/replykeyboardremove.md) or [ForceReply](/bots/api/types/forcereply.md)",
+        "required": false,
+        "description": "Additional interface options. A JSON-serialized object for an [inline keyboard](/bots/features.md#inline-keyboards), [custom reply keyboard](/bots/features.md#keyboards), instructions to remove a reply keyboard or to force a reply from the user."
+      }
+    ],
+    "source": "https://core.telegram.org/bots/api#sendanimation"
+  },
+  {
+    "method": "sendVoice",
+    "readOnly": false,
+    "scope": "channel",
+    "description": "Опубликовать голосовое сообщение.",
+    "required": [
+      "chat_id",
+      "voice"
+    ],
+    "allowed": [
+      "business_connection_id",
+      "chat_id",
+      "message_thread_id",
+      "direct_messages_topic_id",
+      "ephemeral_message_parameters",
+      "voice",
+      "caption",
+      "parse_mode",
+      "caption_entities",
+      "duration",
+      "disable_notification",
+      "protect_content",
+      "allow_paid_broadcast",
+      "message_effect_id",
+      "suggested_post_parameters",
+      "reply_parameters",
+      "reply_markup"
+    ],
+    "parameters": [
+      {
+        "name": "business_connection_id",
+        "type": "String",
+        "required": false,
+        "description": "Unique identifier of the business connection on behalf of which the message will be sent"
+      },
+      {
+        "name": "chat_id",
+        "type": "Integer or String",
+        "required": true,
+        "description": "Unique identifier for the target chat or username of the target bot, supergroup or channel in the format `@username`"
+      },
+      {
+        "name": "message_thread_id",
+        "type": "Integer",
+        "required": false,
+        "description": "Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only"
+      },
+      {
+        "name": "direct_messages_topic_id",
+        "type": "Integer",
+        "required": false,
+        "description": "Identifier of the direct messages topic to which the message will be sent; required if the message is sent to a direct messages chat"
+      },
+      {
+        "name": "ephemeral_message_parameters",
+        "type": "[EphemeralMessageParameters](/bots/api/types/ephemeralmessageparameters.md)",
+        "required": false,
+        "description": "A JSON-serialized object containing the parameters of the ephemeral message to send"
+      },
+      {
+        "name": "voice",
+        "type": "[InputFile](/bots/api/types/inputfile.md) or String",
+        "required": true,
+        "description": "Audio file to send. Pass a file_id as String to send a file that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get a file from the Internet, or upload a new one using multipart/form-data. [More information on Sending Files »](/bots/api.md#sending-files)"
+      },
+      {
+        "name": "caption",
+        "type": "String",
+        "required": false,
+        "description": "Voice message caption, 0-1024 characters after entities parsing"
+      },
+      {
+        "name": "parse_mode",
+        "type": "String",
+        "required": false,
+        "description": "Mode for parsing entities in the voice message caption. See [formatting options](/bots/api/formatting.md) for more details."
+      },
+      {
+        "name": "caption_entities",
+        "type": "Array of [MessageEntity](/bots/api/types/messageentity.md)",
+        "required": false,
+        "description": "A JSON-serialized list of special entities that appear in the caption, which can be specified instead of *parse_mode*"
+      },
+      {
+        "name": "duration",
+        "type": "Integer",
+        "required": false,
+        "description": "Duration of the voice message in seconds"
+      },
+      {
+        "name": "disable_notification",
+        "type": "Boolean",
+        "required": false,
+        "description": "Sends the message [silently](https://telegram.org/blog/channels-2-0#silent-messages). Users will receive a notification with no sound."
+      },
+      {
+        "name": "protect_content",
+        "type": "Boolean",
+        "required": false,
+        "description": "Protects the contents of the sent message from forwarding and saving"
+      },
+      {
+        "name": "allow_paid_broadcast",
+        "type": "Boolean",
+        "required": false,
+        "description": "Pass *True* to allow up to 1000 messages per second, ignoring [broadcasting limits](/bots/faq.md#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance."
+      },
+      {
+        "name": "message_effect_id",
+        "type": "String",
+        "required": false,
+        "description": "Unique identifier of the message effect to be added to the message; for private chats only"
+      },
+      {
+        "name": "suggested_post_parameters",
+        "type": "[SuggestedPostParameters](/bots/api/types/suggestedpostparameters.md)",
+        "required": false,
+        "description": "A JSON-serialized object containing the parameters of the suggested post to send; for direct messages chats only. If the message is sent as a reply to another suggested post, then that suggested post is automatically declined."
+      },
+      {
+        "name": "reply_parameters",
+        "type": "[ReplyParameters](/bots/api/types/replyparameters.md)",
+        "required": false,
+        "description": "Description of the message to reply to"
+      },
+      {
+        "name": "reply_markup",
+        "type": "[InlineKeyboardMarkup](/bots/api/types/inlinekeyboardmarkup.md) or [ReplyKeyboardMarkup](/bots/api/types/replykeyboardmarkup.md) or [ReplyKeyboardRemove](/bots/api/types/replykeyboardremove.md) or [ForceReply](/bots/api/types/forcereply.md)",
+        "required": false,
+        "description": "Additional interface options. A JSON-serialized object for an [inline keyboard](/bots/features.md#inline-keyboards), [custom reply keyboard](/bots/features.md#keyboards), instructions to remove a reply keyboard or to force a reply from the user."
+      }
+    ],
+    "source": "https://core.telegram.org/bots/api#sendvoice"
+  },
+  {
+    "method": "sendVideoNote",
+    "readOnly": false,
+    "scope": "channel",
+    "description": "Опубликовать видеосообщение.",
+    "required": [
+      "chat_id",
+      "video_note"
+    ],
+    "allowed": [
+      "business_connection_id",
+      "chat_id",
+      "message_thread_id",
+      "direct_messages_topic_id",
+      "ephemeral_message_parameters",
+      "video_note",
+      "duration",
+      "length",
+      "thumbnail",
+      "disable_notification",
+      "protect_content",
+      "allow_paid_broadcast",
+      "message_effect_id",
+      "suggested_post_parameters",
+      "reply_parameters",
+      "reply_markup"
+    ],
+    "parameters": [
+      {
+        "name": "business_connection_id",
+        "type": "String",
+        "required": false,
+        "description": "Unique identifier of the business connection on behalf of which the message will be sent"
+      },
+      {
+        "name": "chat_id",
+        "type": "Integer or String",
+        "required": true,
+        "description": "Unique identifier for the target chat or username of the target bot, supergroup or channel in the format `@username`"
+      },
+      {
+        "name": "message_thread_id",
+        "type": "Integer",
+        "required": false,
+        "description": "Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only"
+      },
+      {
+        "name": "direct_messages_topic_id",
+        "type": "Integer",
+        "required": false,
+        "description": "Identifier of the direct messages topic to which the message will be sent; required if the message is sent to a direct messages chat"
+      },
+      {
+        "name": "ephemeral_message_parameters",
+        "type": "[EphemeralMessageParameters](/bots/api/types/ephemeralmessageparameters.md)",
+        "required": false,
+        "description": "A JSON-serialized object containing the parameters of the ephemeral message to send"
+      },
+      {
+        "name": "video_note",
+        "type": "[InputFile](/bots/api/types/inputfile.md) or String",
+        "required": true,
+        "description": "Video note to send. Pass a file_id as String to send a video note that exists on the Telegram servers (recommended) or upload a new video using multipart/form-data. [More information on Sending Files »](/bots/api.md#sending-files). Sending video notes by a URL is currently unsupported."
+      },
+      {
+        "name": "duration",
+        "type": "Integer",
+        "required": false,
+        "description": "Duration of sent video in seconds"
+      },
+      {
+        "name": "length",
+        "type": "Integer",
+        "required": false,
+        "description": "Video width and height, i.e. diameter of the video message"
+      },
+      {
+        "name": "thumbnail",
+        "type": "[InputFile](/bots/api/types/inputfile.md) or String",
+        "required": false,
+        "description": "Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new file, so you can pass \"attach://&lt;file_attach_name&gt;\" if the thumbnail was uploaded using multipart/form-data under &lt;file_attach_name&gt;. [More information on Sending Files »](/bots/api.md#sending-files)"
+      },
+      {
+        "name": "disable_notification",
+        "type": "Boolean",
+        "required": false,
+        "description": "Sends the message [silently](https://telegram.org/blog/channels-2-0#silent-messages). Users will receive a notification with no sound."
+      },
+      {
+        "name": "protect_content",
+        "type": "Boolean",
+        "required": false,
+        "description": "Protects the contents of the sent message from forwarding and saving"
+      },
+      {
+        "name": "allow_paid_broadcast",
+        "type": "Boolean",
+        "required": false,
+        "description": "Pass *True* to allow up to 1000 messages per second, ignoring [broadcasting limits](/bots/faq.md#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance."
+      },
+      {
+        "name": "message_effect_id",
+        "type": "String",
+        "required": false,
+        "description": "Unique identifier of the message effect to be added to the message; for private chats only"
+      },
+      {
+        "name": "suggested_post_parameters",
+        "type": "[SuggestedPostParameters](/bots/api/types/suggestedpostparameters.md)",
+        "required": false,
+        "description": "A JSON-serialized object containing the parameters of the suggested post to send; for direct messages chats only. If the message is sent as a reply to another suggested post, then that suggested post is automatically declined."
+      },
+      {
+        "name": "reply_parameters",
+        "type": "[ReplyParameters](/bots/api/types/replyparameters.md)",
+        "required": false,
+        "description": "Description of the message to reply to"
+      },
+      {
+        "name": "reply_markup",
+        "type": "[InlineKeyboardMarkup](/bots/api/types/inlinekeyboardmarkup.md) or [ReplyKeyboardMarkup](/bots/api/types/replykeyboardmarkup.md) or [ReplyKeyboardRemove](/bots/api/types/replykeyboardremove.md) or [ForceReply](/bots/api/types/forcereply.md)",
+        "required": false,
+        "description": "Additional interface options. A JSON-serialized object for an [inline keyboard](/bots/features.md#inline-keyboards), [custom reply keyboard](/bots/features.md#keyboards), instructions to remove a reply keyboard or to force a reply from the user."
+      }
+    ],
+    "source": "https://core.telegram.org/bots/api#sendvideonote"
+  },
+  {
+    "method": "sendMediaGroup",
+    "readOnly": false,
+    "scope": "channel",
+    "description": "Опубликовать альбом из 2–10 вложений.",
+    "required": [
+      "chat_id",
+      "media"
+    ],
+    "allowed": [
+      "business_connection_id",
+      "chat_id",
+      "message_thread_id",
+      "direct_messages_topic_id",
+      "media",
+      "disable_notification",
+      "protect_content",
+      "allow_paid_broadcast",
+      "message_effect_id",
+      "reply_parameters"
+    ],
+    "parameters": [
+      {
+        "name": "business_connection_id",
+        "type": "String",
+        "required": false,
+        "description": "Unique identifier of the business connection on behalf of which the message will be sent"
+      },
+      {
+        "name": "chat_id",
+        "type": "Integer or String",
+        "required": true,
+        "description": "Unique identifier for the target chat or username of the target bot, supergroup or channel in the format `@username`"
+      },
+      {
+        "name": "message_thread_id",
+        "type": "Integer",
+        "required": false,
+        "description": "Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only"
+      },
+      {
+        "name": "direct_messages_topic_id",
+        "type": "Integer",
+        "required": false,
+        "description": "Identifier of the direct messages topic to which the messages will be sent; required if the messages are sent to a direct messages chat"
+      },
+      {
+        "name": "media",
+        "type": "Array of [InputMediaAudio](/bots/api/types/inputmediaaudio.md), [InputMediaDocument](/bots/api/types/inputmediadocument.md), [InputMediaLivePhoto](/bots/api/types/inputmedialivephoto.md), [InputMediaPhoto](/bots/api/types/inputmediaphoto.md) and [InputMediaVideo](/bots/api/types/inputmediavideo.md)",
+        "required": true,
+        "description": "A JSON-serialized Array describing messages to be sent, must include 2-10 items"
+      },
+      {
+        "name": "disable_notification",
+        "type": "Boolean",
+        "required": false,
+        "description": "Sends messages [silently](https://telegram.org/blog/channels-2-0#silent-messages). Users will receive a notification with no sound."
+      },
+      {
+        "name": "protect_content",
+        "type": "Boolean",
+        "required": false,
+        "description": "Protects the contents of the sent messages from forwarding and saving"
+      },
+      {
+        "name": "allow_paid_broadcast",
+        "type": "Boolean",
+        "required": false,
+        "description": "Pass *True* to allow up to 1000 messages per second, ignoring [broadcasting limits](/bots/faq.md#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance."
+      },
+      {
+        "name": "message_effect_id",
+        "type": "String",
+        "required": false,
+        "description": "Unique identifier of the message effect to be added to the message; for private chats only"
+      },
+      {
+        "name": "reply_parameters",
+        "type": "[ReplyParameters](/bots/api/types/replyparameters.md)",
+        "required": false,
+        "description": "Description of the message to reply to"
+      }
+    ],
+    "source": "https://core.telegram.org/bots/api#sendmediagroup"
+  },
+  {
+    "method": "sendLocation",
+    "readOnly": false,
+    "scope": "channel",
+    "description": "Опубликовать местоположение.",
+    "required": [
+      "chat_id",
+      "latitude",
+      "longitude"
+    ],
+    "allowed": [
+      "business_connection_id",
+      "chat_id",
+      "message_thread_id",
+      "direct_messages_topic_id",
+      "ephemeral_message_parameters",
+      "latitude",
+      "longitude",
+      "horizontal_accuracy",
+      "live_period",
+      "heading",
+      "proximity_alert_radius",
+      "disable_notification",
+      "protect_content",
+      "allow_paid_broadcast",
+      "message_effect_id",
+      "suggested_post_parameters",
+      "reply_parameters",
+      "reply_markup"
+    ],
+    "parameters": [
+      {
+        "name": "business_connection_id",
+        "type": "String",
+        "required": false,
+        "description": "Unique identifier of the business connection on behalf of which the message will be sent"
+      },
+      {
+        "name": "chat_id",
+        "type": "Integer or String",
+        "required": true,
+        "description": "Unique identifier for the target chat or username of the target bot, supergroup or channel in the format `@username`"
+      },
+      {
+        "name": "message_thread_id",
+        "type": "Integer",
+        "required": false,
+        "description": "Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only"
+      },
+      {
+        "name": "direct_messages_topic_id",
+        "type": "Integer",
+        "required": false,
+        "description": "Identifier of the direct messages topic to which the message will be sent; required if the message is sent to a direct messages chat"
+      },
+      {
+        "name": "ephemeral_message_parameters",
+        "type": "[EphemeralMessageParameters](/bots/api/types/ephemeralmessageparameters.md)",
+        "required": false,
+        "description": "A JSON-serialized object containing the parameters of the ephemeral message to send"
+      },
+      {
+        "name": "latitude",
+        "type": "Float",
+        "required": true,
+        "description": "Latitude of the location"
+      },
+      {
+        "name": "longitude",
+        "type": "Float",
+        "required": true,
+        "description": "Longitude of the location"
+      },
+      {
+        "name": "horizontal_accuracy",
+        "type": "Float",
+        "required": false,
+        "description": "The radius of uncertainty for the location, measured in meters; 0-1500"
+      },
+      {
+        "name": "live_period",
+        "type": "Integer",
+        "required": false,
+        "description": "Period in seconds during which the location will be updated (see [Live Locations](https://telegram.org/blog/live-locations)), must be between 60 and 86400, or 0x7FFFFFFF for live locations that can be edited indefinitely. Must be 0 for ephemeral messages."
+      },
+      {
+        "name": "heading",
+        "type": "Integer",
+        "required": false,
+        "description": "For live locations, a direction in which the user is moving, in degrees. Must be between 1 and 360 if specified."
+      },
+      {
+        "name": "proximity_alert_radius",
+        "type": "Integer",
+        "required": false,
+        "description": "For live locations, a maximum distance for proximity alerts about approaching another chat member, in meters. Must be between 1 and 100000 if specified."
+      },
+      {
+        "name": "disable_notification",
+        "type": "Boolean",
+        "required": false,
+        "description": "Sends the message [silently](https://telegram.org/blog/channels-2-0#silent-messages). Users will receive a notification with no sound."
+      },
+      {
+        "name": "protect_content",
+        "type": "Boolean",
+        "required": false,
+        "description": "Protects the contents of the sent message from forwarding and saving"
+      },
+      {
+        "name": "allow_paid_broadcast",
+        "type": "Boolean",
+        "required": false,
+        "description": "Pass *True* to allow up to 1000 messages per second, ignoring [broadcasting limits](/bots/faq.md#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance."
+      },
+      {
+        "name": "message_effect_id",
+        "type": "String",
+        "required": false,
+        "description": "Unique identifier of the message effect to be added to the message; for private chats only"
+      },
+      {
+        "name": "suggested_post_parameters",
+        "type": "[SuggestedPostParameters](/bots/api/types/suggestedpostparameters.md)",
+        "required": false,
+        "description": "A JSON-serialized object containing the parameters of the suggested post to send; for direct messages chats only. If the message is sent as a reply to another suggested post, then that suggested post is automatically declined."
+      },
+      {
+        "name": "reply_parameters",
+        "type": "[ReplyParameters](/bots/api/types/replyparameters.md)",
+        "required": false,
+        "description": "Description of the message to reply to"
+      },
+      {
+        "name": "reply_markup",
+        "type": "[InlineKeyboardMarkup](/bots/api/types/inlinekeyboardmarkup.md) or [ReplyKeyboardMarkup](/bots/api/types/replykeyboardmarkup.md) or [ReplyKeyboardRemove](/bots/api/types/replykeyboardremove.md) or [ForceReply](/bots/api/types/forcereply.md)",
+        "required": false,
+        "description": "Additional interface options. A JSON-serialized object for an [inline keyboard](/bots/features.md#inline-keyboards), [custom reply keyboard](/bots/features.md#keyboards), instructions to remove a reply keyboard or to force a reply from the user."
+      }
+    ],
+    "source": "https://core.telegram.org/bots/api#sendlocation"
+  },
+  {
+    "method": "sendVenue",
+    "readOnly": false,
+    "scope": "channel",
+    "description": "Опубликовать место с названием и адресом.",
+    "required": [
+      "chat_id",
+      "latitude",
+      "longitude",
+      "title",
+      "address"
+    ],
+    "allowed": [
+      "business_connection_id",
+      "chat_id",
+      "message_thread_id",
+      "direct_messages_topic_id",
+      "ephemeral_message_parameters",
+      "latitude",
+      "longitude",
+      "title",
+      "address",
+      "foursquare_id",
+      "foursquare_type",
+      "google_place_id",
+      "google_place_type",
+      "disable_notification",
+      "protect_content",
+      "allow_paid_broadcast",
+      "message_effect_id",
+      "suggested_post_parameters",
+      "reply_parameters",
+      "reply_markup"
+    ],
+    "parameters": [
+      {
+        "name": "business_connection_id",
+        "type": "String",
+        "required": false,
+        "description": "Unique identifier of the business connection on behalf of which the message will be sent"
+      },
+      {
+        "name": "chat_id",
+        "type": "Integer or String",
+        "required": true,
+        "description": "Unique identifier for the target chat or username of the target bot, supergroup or channel in the format `@username`"
+      },
+      {
+        "name": "message_thread_id",
+        "type": "Integer",
+        "required": false,
+        "description": "Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only"
+      },
+      {
+        "name": "direct_messages_topic_id",
+        "type": "Integer",
+        "required": false,
+        "description": "Identifier of the direct messages topic to which the message will be sent; required if the message is sent to a direct messages chat"
+      },
+      {
+        "name": "ephemeral_message_parameters",
+        "type": "[EphemeralMessageParameters](/bots/api/types/ephemeralmessageparameters.md)",
+        "required": false,
+        "description": "A JSON-serialized object containing the parameters of the ephemeral message to send"
+      },
+      {
+        "name": "latitude",
+        "type": "Float",
+        "required": true,
+        "description": "Latitude of the venue"
+      },
+      {
+        "name": "longitude",
+        "type": "Float",
+        "required": true,
+        "description": "Longitude of the venue"
+      },
+      {
+        "name": "title",
+        "type": "String",
+        "required": true,
+        "description": "Name of the venue"
+      },
+      {
+        "name": "address",
+        "type": "String",
+        "required": true,
+        "description": "Address of the venue"
+      },
+      {
+        "name": "foursquare_id",
+        "type": "String",
+        "required": false,
+        "description": "Foursquare identifier of the venue"
+      },
+      {
+        "name": "foursquare_type",
+        "type": "String",
+        "required": false,
+        "description": "Foursquare type of the venue, if known. (For example, \"arts_entertainment/default\", \"arts_entertainment/aquarium\" or \"food/icecream\".)"
+      },
+      {
+        "name": "google_place_id",
+        "type": "String",
+        "required": false,
+        "description": "Google Places identifier of the venue"
+      },
+      {
+        "name": "google_place_type",
+        "type": "String",
+        "required": false,
+        "description": "Google Places type of the venue. (See [supported types](https://developers.google.com/places/web-service/supported_types).)"
+      },
+      {
+        "name": "disable_notification",
+        "type": "Boolean",
+        "required": false,
+        "description": "Sends the message [silently](https://telegram.org/blog/channels-2-0#silent-messages). Users will receive a notification with no sound."
+      },
+      {
+        "name": "protect_content",
+        "type": "Boolean",
+        "required": false,
+        "description": "Protects the contents of the sent message from forwarding and saving"
+      },
+      {
+        "name": "allow_paid_broadcast",
+        "type": "Boolean",
+        "required": false,
+        "description": "Pass *True* to allow up to 1000 messages per second, ignoring [broadcasting limits](/bots/faq.md#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance."
+      },
+      {
+        "name": "message_effect_id",
+        "type": "String",
+        "required": false,
+        "description": "Unique identifier of the message effect to be added to the message; for private chats only"
+      },
+      {
+        "name": "suggested_post_parameters",
+        "type": "[SuggestedPostParameters](/bots/api/types/suggestedpostparameters.md)",
+        "required": false,
+        "description": "A JSON-serialized object containing the parameters of the suggested post to send; for direct messages chats only. If the message is sent as a reply to another suggested post, then that suggested post is automatically declined."
+      },
+      {
+        "name": "reply_parameters",
+        "type": "[ReplyParameters](/bots/api/types/replyparameters.md)",
+        "required": false,
+        "description": "Description of the message to reply to"
+      },
+      {
+        "name": "reply_markup",
+        "type": "[InlineKeyboardMarkup](/bots/api/types/inlinekeyboardmarkup.md) or [ReplyKeyboardMarkup](/bots/api/types/replykeyboardmarkup.md) or [ReplyKeyboardRemove](/bots/api/types/replykeyboardremove.md) or [ForceReply](/bots/api/types/forcereply.md)",
+        "required": false,
+        "description": "Additional interface options. A JSON-serialized object for an [inline keyboard](/bots/features.md#inline-keyboards), [custom reply keyboard](/bots/features.md#keyboards), instructions to remove a reply keyboard or to force a reply from the user."
+      }
+    ],
+    "source": "https://core.telegram.org/bots/api#sendvenue"
+  },
+  {
+    "method": "sendContact",
+    "readOnly": false,
+    "scope": "channel",
+    "description": "Опубликовать контакт.",
+    "required": [
+      "chat_id",
+      "phone_number",
+      "first_name"
+    ],
+    "allowed": [
+      "business_connection_id",
+      "chat_id",
+      "message_thread_id",
+      "direct_messages_topic_id",
+      "ephemeral_message_parameters",
+      "phone_number",
+      "first_name",
+      "last_name",
+      "vcard",
+      "disable_notification",
+      "protect_content",
+      "allow_paid_broadcast",
+      "message_effect_id",
+      "suggested_post_parameters",
+      "reply_parameters",
+      "reply_markup"
+    ],
+    "parameters": [
+      {
+        "name": "business_connection_id",
+        "type": "String",
+        "required": false,
+        "description": "Unique identifier of the business connection on behalf of which the message will be sent"
+      },
+      {
+        "name": "chat_id",
+        "type": "Integer or String",
+        "required": true,
+        "description": "Unique identifier for the target chat or username of the target bot, supergroup or channel in the format `@username`"
+      },
+      {
+        "name": "message_thread_id",
+        "type": "Integer",
+        "required": false,
+        "description": "Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only"
+      },
+      {
+        "name": "direct_messages_topic_id",
+        "type": "Integer",
+        "required": false,
+        "description": "Identifier of the direct messages topic to which the message will be sent; required if the message is sent to a direct messages chat"
+      },
+      {
+        "name": "ephemeral_message_parameters",
+        "type": "[EphemeralMessageParameters](/bots/api/types/ephemeralmessageparameters.md)",
+        "required": false,
+        "description": "A JSON-serialized object containing the parameters of the ephemeral message to send"
+      },
+      {
+        "name": "phone_number",
+        "type": "String",
+        "required": true,
+        "description": "Contact's phone number"
+      },
+      {
+        "name": "first_name",
+        "type": "String",
+        "required": true,
+        "description": "Contact's first name"
+      },
+      {
+        "name": "last_name",
+        "type": "String",
+        "required": false,
+        "description": "Contact's last name"
+      },
+      {
+        "name": "vcard",
+        "type": "String",
+        "required": false,
+        "description": "Additional data about the contact in the form of a [vCard](https://en.wikipedia.org/wiki/VCard), 0-2048 bytes"
+      },
+      {
+        "name": "disable_notification",
+        "type": "Boolean",
+        "required": false,
+        "description": "Sends the message [silently](https://telegram.org/blog/channels-2-0#silent-messages). Users will receive a notification with no sound."
+      },
+      {
+        "name": "protect_content",
+        "type": "Boolean",
+        "required": false,
+        "description": "Protects the contents of the sent message from forwarding and saving"
+      },
+      {
+        "name": "allow_paid_broadcast",
+        "type": "Boolean",
+        "required": false,
+        "description": "Pass *True* to allow up to 1000 messages per second, ignoring [broadcasting limits](/bots/faq.md#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance."
+      },
+      {
+        "name": "message_effect_id",
+        "type": "String",
+        "required": false,
+        "description": "Unique identifier of the message effect to be added to the message; for private chats only"
+      },
+      {
+        "name": "suggested_post_parameters",
+        "type": "[SuggestedPostParameters](/bots/api/types/suggestedpostparameters.md)",
+        "required": false,
+        "description": "A JSON-serialized object containing the parameters of the suggested post to send; for direct messages chats only. If the message is sent as a reply to another suggested post, then that suggested post is automatically declined."
+      },
+      {
+        "name": "reply_parameters",
+        "type": "[ReplyParameters](/bots/api/types/replyparameters.md)",
+        "required": false,
+        "description": "Description of the message to reply to"
+      },
+      {
+        "name": "reply_markup",
+        "type": "[InlineKeyboardMarkup](/bots/api/types/inlinekeyboardmarkup.md) or [ReplyKeyboardMarkup](/bots/api/types/replykeyboardmarkup.md) or [ReplyKeyboardRemove](/bots/api/types/replykeyboardremove.md) or [ForceReply](/bots/api/types/forcereply.md)",
+        "required": false,
+        "description": "Additional interface options. A JSON-serialized object for an [inline keyboard](/bots/features.md#inline-keyboards), [custom reply keyboard](/bots/features.md#keyboards), instructions to remove a reply keyboard or to force a reply from the user."
+      }
+    ],
+    "source": "https://core.telegram.org/bots/api#sendcontact"
+  },
+  {
+    "method": "sendPoll",
+    "readOnly": false,
+    "scope": "channel",
+    "description": "Опубликовать опрос или викторину.",
+    "required": [
+      "chat_id",
+      "question",
+      "options"
+    ],
+    "allowed": [
+      "business_connection_id",
+      "chat_id",
+      "message_thread_id",
+      "question",
+      "question_parse_mode",
+      "question_entities",
+      "options",
+      "is_anonymous",
+      "type",
+      "allows_multiple_answers",
+      "allows_revoting",
+      "shuffle_options",
+      "allow_adding_options",
+      "hide_results_until_closes",
+      "members_only",
+      "country_codes",
+      "correct_option_ids",
+      "explanation",
+      "explanation_parse_mode",
+      "explanation_entities",
+      "explanation_media",
+      "open_period",
+      "close_date",
+      "is_closed",
+      "description",
+      "description_parse_mode",
+      "description_entities",
+      "media",
+      "disable_notification",
+      "protect_content",
+      "allow_paid_broadcast",
+      "message_effect_id",
+      "reply_parameters",
+      "reply_markup"
+    ],
+    "parameters": [
+      {
+        "name": "business_connection_id",
+        "type": "String",
+        "required": false,
+        "description": "Unique identifier of the business connection on behalf of which the message will be sent"
+      },
+      {
+        "name": "chat_id",
+        "type": "Integer or String",
+        "required": true,
+        "description": "Unique identifier for the target chat or username of the target bot, supergroup or channel in the format `@username`. Polls can't be sent to channel direct messages chats."
+      },
+      {
+        "name": "message_thread_id",
+        "type": "Integer",
+        "required": false,
+        "description": "Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only"
+      },
+      {
+        "name": "question",
+        "type": "String",
+        "required": true,
+        "description": "Poll question, 1-300 characters"
+      },
+      {
+        "name": "question_parse_mode",
+        "type": "String",
+        "required": false,
+        "description": "Mode for parsing entities in the question. See [formatting options](/bots/api/formatting.md) for more details. Currently, only custom emoji entities are allowed."
+      },
+      {
+        "name": "question_entities",
+        "type": "Array of [MessageEntity](/bots/api/types/messageentity.md)",
+        "required": false,
+        "description": "A JSON-serialized list of special entities that appear in the poll question. It can be specified instead of *question_parse_mode*."
+      },
+      {
+        "name": "options",
+        "type": "Array of [InputPollOption](/bots/api/types/inputpolloption.md)",
+        "required": true,
+        "description": "A JSON-serialized list of 1-12 answer options"
+      },
+      {
+        "name": "is_anonymous",
+        "type": "Boolean",
+        "required": false,
+        "description": "*True*, if the poll needs to be anonymous, defaults to *True*"
+      },
+      {
+        "name": "type",
+        "type": "String",
+        "required": false,
+        "description": "Poll type, \"quiz\" or \"regular\", defaults to \"regular\""
+      },
+      {
+        "name": "allows_multiple_answers",
+        "type": "Boolean",
+        "required": false,
+        "description": "Pass *True* if the poll allows multiple answers, defaults to *False*"
+      },
+      {
+        "name": "allows_revoting",
+        "type": "Boolean",
+        "required": false,
+        "description": "Pass *True* if the poll allows to change chosen answer options, defaults to *False* for quizzes and to *True* for regular polls"
+      },
+      {
+        "name": "shuffle_options",
+        "type": "Boolean",
+        "required": false,
+        "description": "Pass *True* if the poll options must be shown in random order"
+      },
+      {
+        "name": "allow_adding_options",
+        "type": "Boolean",
+        "required": false,
+        "description": "Pass *True* if answer options can be added to the poll after creation; not supported for anonymous polls and quizzes"
+      },
+      {
+        "name": "hide_results_until_closes",
+        "type": "Boolean",
+        "required": false,
+        "description": "Pass *True* if poll results must be shown only after the poll closes"
+      },
+      {
+        "name": "members_only",
+        "type": "Boolean",
+        "required": false,
+        "description": "Pass *True* if voting is limited to users who have been members of the chat where the poll is being sent for more than 24 hours; for channel chats only"
+      },
+      {
+        "name": "country_codes",
+        "type": "Array of String",
+        "required": false,
+        "description": "A JSON-serialized list of 0-12 two-letter [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) country codes indicating the countries from which users can vote in the poll; for channel chats only. Use \"FT\" as a country code to allow users with anonymous numbers to vote. If omitted or empty, then users from any country can participate in the poll."
+      },
+      {
+        "name": "correct_option_ids",
+        "type": "Array of Integer",
+        "required": false,
+        "description": "A JSON-serialized list of monotonically increasing 0-based identifiers of the correct answer options, required for polls in quiz mode"
+      },
+      {
+        "name": "explanation",
+        "type": "String",
+        "required": false,
+        "description": "Text that is shown when a user chooses an incorrect answer or taps on the lamp icon in a quiz-style poll, 0-200 characters with at most 2 line feeds after entities parsing"
+      },
+      {
+        "name": "explanation_parse_mode",
+        "type": "String",
+        "required": false,
+        "description": "Mode for parsing entities in the explanation. See [formatting options](/bots/api/formatting.md) for more details."
+      },
+      {
+        "name": "explanation_entities",
+        "type": "Array of [MessageEntity](/bots/api/types/messageentity.md)",
+        "required": false,
+        "description": "A JSON-serialized list of special entities that appear in the poll explanation. It can be specified instead of *explanation_parse_mode*."
+      },
+      {
+        "name": "explanation_media",
+        "type": "[InputPollMedia](/bots/api/types/inputpollmedia.md)",
+        "required": false,
+        "description": "Media added to the quiz explanation"
+      },
+      {
+        "name": "open_period",
+        "type": "Integer",
+        "required": false,
+        "description": "Amount of time in seconds the poll will be active after creation, 5-2628000. Can't be used together with *close_date*."
+      },
+      {
+        "name": "close_date",
+        "type": "Integer",
+        "required": false,
+        "description": "Point in time (Unix timestamp) when the poll will be automatically closed. Must be at least 5 and no more than 2628000 seconds in the future. Can't be used together with *open_period*."
+      },
+      {
+        "name": "is_closed",
+        "type": "Boolean",
+        "required": false,
+        "description": "Pass *True* if the poll needs to be immediately closed. This can be useful for poll preview."
+      },
+      {
+        "name": "description",
+        "type": "String",
+        "required": false,
+        "description": "Description of the poll to be sent, 0-1024 characters after entities parsing"
+      },
+      {
+        "name": "description_parse_mode",
+        "type": "String",
+        "required": false,
+        "description": "Mode for parsing entities in the poll description. See [formatting options](/bots/api/formatting.md) for more details."
+      },
+      {
+        "name": "description_entities",
+        "type": "Array of [MessageEntity](/bots/api/types/messageentity.md)",
+        "required": false,
+        "description": "A JSON-serialized list of special entities that appear in the poll description, which can be specified instead of *description_parse_mode*"
+      },
+      {
+        "name": "media",
+        "type": "[InputPollMedia](/bots/api/types/inputpollmedia.md)",
+        "required": false,
+        "description": "Media added to the poll description"
+      },
+      {
+        "name": "disable_notification",
+        "type": "Boolean",
+        "required": false,
+        "description": "Sends the message [silently](https://telegram.org/blog/channels-2-0#silent-messages). Users will receive a notification with no sound."
+      },
+      {
+        "name": "protect_content",
+        "type": "Boolean",
+        "required": false,
+        "description": "Protects the contents of the sent message from forwarding and saving"
+      },
+      {
+        "name": "allow_paid_broadcast",
+        "type": "Boolean",
+        "required": false,
+        "description": "Pass *True* to allow up to 1000 messages per second, ignoring [broadcasting limits](/bots/faq.md#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance."
+      },
+      {
+        "name": "message_effect_id",
+        "type": "String",
+        "required": false,
+        "description": "Unique identifier of the message effect to be added to the message; for private chats only"
+      },
+      {
+        "name": "reply_parameters",
+        "type": "[ReplyParameters](/bots/api/types/replyparameters.md)",
+        "required": false,
+        "description": "Description of the message to reply to"
+      },
+      {
+        "name": "reply_markup",
+        "type": "[InlineKeyboardMarkup](/bots/api/types/inlinekeyboardmarkup.md) or [ReplyKeyboardMarkup](/bots/api/types/replykeyboardmarkup.md) or [ReplyKeyboardRemove](/bots/api/types/replykeyboardremove.md) or [ForceReply](/bots/api/types/forcereply.md)",
+        "required": false,
+        "description": "Additional interface options. A JSON-serialized object for an [inline keyboard](/bots/features.md#inline-keyboards), [custom reply keyboard](/bots/features.md#keyboards), instructions to remove a reply keyboard or to force a reply from the user."
+      }
+    ],
+    "source": "https://core.telegram.org/bots/api#sendpoll"
+  },
+  {
+    "method": "sendChatAction",
+    "readOnly": false,
+    "scope": "channel",
+    "description": "Установить индикатор действия; поддержка зависит от типа чата.",
+    "required": [
+      "chat_id",
+      "action"
+    ],
+    "allowed": [
+      "business_connection_id",
+      "chat_id",
+      "message_thread_id",
+      "action"
+    ],
+    "parameters": [
+      {
+        "name": "business_connection_id",
+        "type": "String",
+        "required": false,
+        "description": "Unique identifier of the business connection on behalf of which the action will be sent"
+      },
+      {
+        "name": "chat_id",
+        "type": "Integer or String",
+        "required": true,
+        "description": "Unique identifier for the target chat or username of the target bot or supergroup in the format `@username`. Channel chats and channel direct messages chats aren't supported."
+      },
+      {
+        "name": "message_thread_id",
+        "type": "Integer",
+        "required": false,
+        "description": "Unique identifier for the target message thread or topic of a forum; for supergroups and private chats of bots with forum topic mode enabled only"
+      },
+      {
+        "name": "action",
+        "type": "String",
+        "required": true,
+        "description": "Type of action to broadcast. Choose one, depending on what the user is about to receive: *typing* for [text messages](/bots/api/methods/sendmessage.md), *upload_photo* for [photos](/bots/api/methods/sendphoto.md), *record_video* or *upload_video* for [videos](/bots/api/methods/sendvideo.md), *record_voice* or *upload_voice* for [voice notes](/bots/api/methods/sendvoice.md), *upload_document* for [general files](/bots/api/methods/senddocument.md), *choose_sticker* for [stickers](/bots/api/methods/sendsticker.md), *find_location* for [location data](/bots/api/methods/sendlocation.md), *record_video_note* or *upload_video_note* for [video notes](/bots/api/methods/sendvideonote.md)."
+      }
+    ],
+    "source": "https://core.telegram.org/bots/api#sendchataction"
+  },
+  {
+    "method": "setMessageReaction",
+    "readOnly": false,
+    "scope": "channel",
+    "description": "Изменить реакцию бота на пост.",
+    "required": [
+      "chat_id",
+      "message_id"
+    ],
+    "allowed": [
+      "chat_id",
+      "message_id",
+      "reaction",
+      "is_big"
+    ],
+    "parameters": [
+      {
+        "name": "chat_id",
+        "type": "Integer or String",
+        "required": true,
+        "description": "Unique identifier for the target chat or username of the target bot, supergroup or channel in the format `@username`"
+      },
+      {
+        "name": "message_id",
+        "type": "Integer",
+        "required": true,
+        "description": "Identifier of the target message. If the message belongs to a media group, the reaction is set to the first non-deleted message in the group instead."
+      },
+      {
+        "name": "reaction",
+        "type": "Array of [ReactionType](/bots/api/types/reactiontype.md)",
+        "required": false,
+        "description": "A JSON-serialized list of reaction types to set on the message. Currently, as non-premium users, bots can set up to one reaction per message. A custom emoji reaction can be used if it is either already present on the message or explicitly allowed by chat administrators. Paid reactions can't be used by bots."
+      },
+      {
+        "name": "is_big",
+        "type": "Boolean",
+        "required": false,
+        "description": "Pass *True* to set the reaction with a big animation"
+      }
+    ],
+    "source": "https://core.telegram.org/bots/api#setmessagereaction"
+  },
+  {
+    "method": "getUserProfilePhotos",
+    "readOnly": true,
+    "scope": "bot",
+    "description": "Получить фотографии профиля самого бота; user_id следует закрепить на ID бота.",
+    "required": [
+      "user_id"
+    ],
+    "allowed": [
+      "user_id",
+      "offset",
+      "limit"
+    ],
+    "parameters": [
+      {
+        "name": "user_id",
+        "type": "Integer",
+        "required": true,
+        "description": "Unique identifier of the target user"
+      },
+      {
+        "name": "offset",
+        "type": "Integer",
+        "required": false,
+        "description": "Sequential number of the first photo to be returned. By default, all photos are returned."
+      },
+      {
+        "name": "limit",
+        "type": "Integer",
+        "required": false,
+        "description": "Limits the number of photos to be retrieved. Values between 1-100 are accepted. Defaults to 100."
+      }
+    ],
+    "source": "https://core.telegram.org/bots/api#getuserprofilephotos"
+  },
+  {
+    "method": "getFile",
+    "readOnly": true,
+    "scope": "bot",
+    "description": "Получить сведения о ранее известном файле бота.",
+    "required": [
+      "file_id"
+    ],
+    "allowed": [
+      "file_id"
+    ],
+    "parameters": [
+      {
+        "name": "file_id",
+        "type": "String",
+        "required": true,
+        "description": "File identifier to get information about"
+      }
+    ],
+    "source": "https://core.telegram.org/bots/api#getfile"
+  },
+  {
+    "method": "banChatMember",
+    "readOnly": false,
+    "scope": "channel",
+    "description": "Заблокировать участника канала.",
+    "required": [
+      "chat_id",
+      "user_id"
+    ],
+    "allowed": [
+      "chat_id",
+      "user_id",
+      "until_date",
+      "revoke_messages"
+    ],
+    "parameters": [
+      {
+        "name": "chat_id",
+        "type": "Integer or String",
+        "required": true,
+        "description": "Unique identifier for the target group or username of the target supergroup or channel in the format `@username`"
+      },
+      {
+        "name": "user_id",
+        "type": "Integer",
+        "required": true,
+        "description": "Unique identifier of the target user"
+      },
+      {
+        "name": "until_date",
+        "type": "Integer",
+        "required": false,
+        "description": "Date when the user will be unbanned; Unix time. If user is banned for more than 366 days or less than 30 seconds from the current time they are considered to be banned forever. Applied for supergroups and channels only."
+      },
+      {
+        "name": "revoke_messages",
+        "type": "Boolean",
+        "required": false,
+        "description": "Pass *True* to delete all messages from the chat for the user that is being removed. If *False*, the user will be able to see messages in the group that were sent before the user was removed. Always *True* for supergroups and channels."
+      }
+    ],
+    "source": "https://core.telegram.org/bots/api#banchatmember"
+  },
+  {
+    "method": "unbanChatMember",
+    "readOnly": false,
+    "scope": "channel",
+    "description": "Разблокировать участника канала.",
+    "required": [
+      "chat_id",
+      "user_id"
+    ],
+    "allowed": [
+      "chat_id",
+      "user_id",
+      "only_if_banned"
+    ],
+    "parameters": [
+      {
+        "name": "chat_id",
+        "type": "Integer or String",
+        "required": true,
+        "description": "Unique identifier for the target group or username of the target supergroup or channel in the format `@username`"
+      },
+      {
+        "name": "user_id",
+        "type": "Integer",
+        "required": true,
+        "description": "Unique identifier of the target user"
+      },
+      {
+        "name": "only_if_banned",
+        "type": "Boolean",
+        "required": false,
+        "description": "Do nothing if the user is not banned"
+      }
+    ],
+    "source": "https://core.telegram.org/bots/api#unbanchatmember"
+  },
+  {
+    "method": "promoteChatMember",
+    "readOnly": false,
+    "scope": "channel",
+    "description": "Изменить административные права участника в канале.",
+    "required": [
+      "chat_id",
+      "user_id"
+    ],
+    "allowed": [
+      "chat_id",
+      "user_id",
+      "is_anonymous",
+      "can_manage_chat",
+      "can_delete_messages",
+      "can_manage_video_chats",
+      "can_restrict_members",
+      "can_promote_members",
+      "can_change_info",
+      "can_invite_users",
+      "can_post_stories",
+      "can_edit_stories",
+      "can_delete_stories",
+      "can_post_messages",
+      "can_edit_messages",
+      "can_pin_messages",
+      "can_manage_topics",
+      "can_manage_direct_messages",
+      "can_manage_tags",
+      "can_send_welcome_messages"
+    ],
+    "parameters": [
+      {
+        "name": "chat_id",
+        "type": "Integer or String",
+        "required": true,
+        "description": "Unique identifier for the target chat or username of the target channel in the format `@username`"
+      },
+      {
+        "name": "user_id",
+        "type": "Integer",
+        "required": true,
+        "description": "Unique identifier of the target user"
+      },
+      {
+        "name": "is_anonymous",
+        "type": "Boolean",
+        "required": false,
+        "description": "Pass *True* if the administrator's presence in the chat is hidden"
+      },
+      {
+        "name": "can_manage_chat",
+        "type": "Boolean",
+        "required": false,
+        "description": "Pass *True* if the administrator can access the chat event log, get boost list, see hidden supergroup and channel members, report spam messages, ignore slow mode, and send messages to the chat without paying Telegram Stars. Implied by any other administrator privilege."
+      },
+      {
+        "name": "can_delete_messages",
+        "type": "Boolean",
+        "required": false,
+        "description": "Pass *True* if the administrator can delete messages of other users"
+      },
+      {
+        "name": "can_manage_video_chats",
+        "type": "Boolean",
+        "required": false,
+        "description": "Pass *True* if the administrator can manage video chats"
+      },
+      {
+        "name": "can_restrict_members",
+        "type": "Boolean",
+        "required": false,
+        "description": "Pass *True* if the administrator can restrict, ban or unban chat members, or access supergroup statistics. For backward compatibility, defaults to *True* for promotions of channel administrators."
+      },
+      {
+        "name": "can_promote_members",
+        "type": "Boolean",
+        "required": false,
+        "description": "Pass *True* if the administrator can add new administrators with a subset of their own privileges or demote administrators that they have promoted, directly or indirectly (promoted by administrators that were appointed by him)"
+      },
+      {
+        "name": "can_change_info",
+        "type": "Boolean",
+        "required": false,
+        "description": "Pass *True* if the administrator can change chat title, photo and other settings"
+      },
+      {
+        "name": "can_invite_users",
+        "type": "Boolean",
+        "required": false,
+        "description": "Pass *True* if the administrator can invite new users to the chat"
+      },
+      {
+        "name": "can_post_stories",
+        "type": "Boolean",
+        "required": false,
+        "description": "Pass *True* if the administrator can post stories to the chat"
+      },
+      {
+        "name": "can_edit_stories",
+        "type": "Boolean",
+        "required": false,
+        "description": "Pass *True* if the administrator can edit stories posted by other users, post stories to the chat page, pin chat stories, and access the chat's story archive"
+      },
+      {
+        "name": "can_delete_stories",
+        "type": "Boolean",
+        "required": false,
+        "description": "Pass *True* if the administrator can delete stories posted by other users"
+      },
+      {
+        "name": "can_post_messages",
+        "type": "Boolean",
+        "required": false,
+        "description": "Pass *True* if the administrator can post messages in the channel, approve suggested posts, or access channel statistics; for channels only"
+      },
+      {
+        "name": "can_edit_messages",
+        "type": "Boolean",
+        "required": false,
+        "description": "Pass *True* if the administrator can edit messages of other users and can pin messages; for channels only"
+      },
+      {
+        "name": "can_pin_messages",
+        "type": "Boolean",
+        "required": false,
+        "description": "Pass *True* if the administrator can pin messages; for supergroups only"
+      },
+      {
+        "name": "can_manage_topics",
+        "type": "Boolean",
+        "required": false,
+        "description": "Pass *True* if the user is allowed to create, rename, close, and reopen forum topics; for supergroups only"
+      },
+      {
+        "name": "can_manage_direct_messages",
+        "type": "Boolean",
+        "required": false,
+        "description": "Pass *True* if the administrator can manage direct messages within the channel and decline suggested posts; for channels only"
+      },
+      {
+        "name": "can_manage_tags",
+        "type": "Boolean",
+        "required": false,
+        "description": "Pass *True* if the administrator can edit the tags of regular members; for groups and supergroups only"
+      },
+      {
+        "name": "can_send_welcome_messages",
+        "type": "Boolean",
+        "required": false,
+        "description": "Pass *True* if the administrator can manage chat welcome messages or directly send them in the case of bots"
+      }
+    ],
+    "source": "https://core.telegram.org/bots/api#promotechatmember"
+  },
+  {
+    "method": "banChatSenderChat",
+    "readOnly": false,
+    "scope": "channel",
+    "description": "Заблокировать отправителя от имени чата; метод предназначен для супергрупп и может быть неприменим к каналу.",
+    "required": [
+      "chat_id",
+      "sender_chat_id"
+    ],
+    "allowed": [
+      "chat_id",
+      "sender_chat_id"
+    ],
+    "parameters": [
+      {
+        "name": "chat_id",
+        "type": "Integer or String",
+        "required": true,
+        "description": "Unique identifier for the target chat or username of the target channel in the format `@username`"
+      },
+      {
+        "name": "sender_chat_id",
+        "type": "Integer",
+        "required": true,
+        "description": "Unique identifier of the target sender chat"
+      }
+    ],
+    "source": "https://core.telegram.org/bots/api#banchatsenderchat"
+  },
+  {
+    "method": "unbanChatSenderChat",
+    "readOnly": false,
+    "scope": "channel",
+    "description": "Разблокировать отправителя от имени чата; метод предназначен для супергрупп.",
+    "required": [
+      "chat_id",
+      "sender_chat_id"
+    ],
+    "allowed": [
+      "chat_id",
+      "sender_chat_id"
+    ],
+    "parameters": [
+      {
+        "name": "chat_id",
+        "type": "Integer or String",
+        "required": true,
+        "description": "Unique identifier for the target chat or username of the target channel in the format `@username`"
+      },
+      {
+        "name": "sender_chat_id",
+        "type": "Integer",
+        "required": true,
+        "description": "Unique identifier of the target sender chat"
+      }
+    ],
+    "source": "https://core.telegram.org/bots/api#unbanchatsenderchat"
+  },
+  {
+    "method": "exportChatInviteLink",
+    "readOnly": false,
+    "scope": "channel",
+    "description": "Создать основную пригласительную ссылку.",
+    "required": [
+      "chat_id"
+    ],
+    "allowed": [
+      "chat_id"
+    ],
+    "parameters": [
+      {
+        "name": "chat_id",
+        "type": "Integer or String",
+        "required": true,
+        "description": "Unique identifier for the target chat or username of the target channel in the format `@username`"
+      }
+    ],
+    "source": "https://core.telegram.org/bots/api#exportchatinvitelink"
+  },
+  {
+    "method": "createChatInviteLink",
+    "readOnly": false,
+    "scope": "channel",
+    "description": "Создать дополнительную пригласительную ссылку.",
+    "required": [
+      "chat_id"
+    ],
+    "allowed": [
+      "chat_id",
+      "name",
+      "expire_date",
+      "member_limit",
+      "creates_join_request"
+    ],
+    "parameters": [
+      {
+        "name": "chat_id",
+        "type": "Integer or String",
+        "required": true,
+        "description": "Unique identifier for the target chat or username of the target channel in the format `@username`"
+      },
+      {
+        "name": "name",
+        "type": "String",
+        "required": false,
+        "description": "Invite link name; 0-32 characters"
+      },
+      {
+        "name": "expire_date",
+        "type": "Integer",
+        "required": false,
+        "description": "Point in time (Unix timestamp) when the link will expire"
+      },
+      {
+        "name": "member_limit",
+        "type": "Integer",
+        "required": false,
+        "description": "The maximum number of users that can be members of the chat simultaneously after joining the chat via this invite link; 1-99999"
+      },
+      {
+        "name": "creates_join_request",
+        "type": "Boolean",
+        "required": false,
+        "description": "*True*, if users joining the chat via the link need to be approved by chat administrators. If *True*, *member_limit* can't be specified."
+      }
+    ],
+    "source": "https://core.telegram.org/bots/api#createchatinvitelink"
+  },
+  {
+    "method": "editChatInviteLink",
+    "readOnly": false,
+    "scope": "channel",
+    "description": "Изменить созданную ботом пригласительную ссылку.",
+    "required": [
+      "chat_id",
+      "invite_link"
+    ],
+    "allowed": [
+      "chat_id",
+      "invite_link",
+      "name",
+      "expire_date",
+      "member_limit",
+      "creates_join_request"
+    ],
+    "parameters": [
+      {
+        "name": "chat_id",
+        "type": "Integer or String",
+        "required": true,
+        "description": "Unique identifier for the target chat or username of the target channel in the format `@username`"
+      },
+      {
+        "name": "invite_link",
+        "type": "String",
+        "required": true,
+        "description": "The invite link to edit"
+      },
+      {
+        "name": "name",
+        "type": "String",
+        "required": false,
+        "description": "Invite link name; 0-32 characters"
+      },
+      {
+        "name": "expire_date",
+        "type": "Integer",
+        "required": false,
+        "description": "Point in time (Unix timestamp) when the link will expire"
+      },
+      {
+        "name": "member_limit",
+        "type": "Integer",
+        "required": false,
+        "description": "The maximum number of users that can be members of the chat simultaneously after joining the chat via this invite link; 1-99999"
+      },
+      {
+        "name": "creates_join_request",
+        "type": "Boolean",
+        "required": false,
+        "description": "*True*, if users joining the chat via the link need to be approved by chat administrators. If *True*, *member_limit* can't be specified."
+      }
+    ],
+    "source": "https://core.telegram.org/bots/api#editchatinvitelink"
+  },
+  {
+    "method": "revokeChatInviteLink",
+    "readOnly": false,
+    "scope": "channel",
+    "description": "Отозвать созданную ботом пригласительную ссылку.",
+    "required": [
+      "chat_id",
+      "invite_link"
+    ],
+    "allowed": [
+      "chat_id",
+      "invite_link"
+    ],
+    "parameters": [
+      {
+        "name": "chat_id",
+        "type": "Integer or String",
+        "required": true,
+        "description": "Unique identifier of the target chat or username of the target channel in the format `@username`"
+      },
+      {
+        "name": "invite_link",
+        "type": "String",
+        "required": true,
+        "description": "The invite link to revoke"
+      }
+    ],
+    "source": "https://core.telegram.org/bots/api#revokechatinvitelink"
+  },
+  {
+    "method": "approveChatJoinRequest",
+    "readOnly": false,
+    "scope": "channel",
+    "description": "Одобрить заявку на вступление.",
+    "required": [
+      "chat_id",
+      "user_id"
+    ],
+    "allowed": [
+      "chat_id",
+      "user_id"
+    ],
+    "parameters": [
+      {
+        "name": "chat_id",
+        "type": "Integer or String",
+        "required": true,
+        "description": "Unique identifier for the target chat or username of the target channel in the format `@username`"
+      },
+      {
+        "name": "user_id",
+        "type": "Integer",
+        "required": true,
+        "description": "Unique identifier of the target user"
+      }
+    ],
+    "source": "https://core.telegram.org/bots/api#approvechatjoinrequest"
+  },
+  {
+    "method": "declineChatJoinRequest",
+    "readOnly": false,
+    "scope": "channel",
+    "description": "Отклонить заявку на вступление.",
+    "required": [
+      "chat_id",
+      "user_id"
+    ],
+    "allowed": [
+      "chat_id",
+      "user_id"
+    ],
+    "parameters": [
+      {
+        "name": "chat_id",
+        "type": "Integer or String",
+        "required": true,
+        "description": "Unique identifier for the target chat or username of the target channel in the format `@username`"
+      },
+      {
+        "name": "user_id",
+        "type": "Integer",
+        "required": true,
+        "description": "Unique identifier of the target user"
+      }
+    ],
+    "source": "https://core.telegram.org/bots/api#declinechatjoinrequest"
+  },
+  {
+    "method": "setChatPhoto",
+    "readOnly": false,
+    "scope": "channel",
+    "description": "Изменить фотографию канала.",
+    "required": [
+      "chat_id",
+      "photo"
+    ],
+    "allowed": [
+      "chat_id",
+      "photo"
+    ],
+    "parameters": [
+      {
+        "name": "chat_id",
+        "type": "Integer or String",
+        "required": true,
+        "description": "Unique identifier for the target chat or username of the target channel in the format `@username`"
+      },
+      {
+        "name": "photo",
+        "type": "[InputFile](/bots/api/types/inputfile.md)",
+        "required": true,
+        "description": "New chat photo, uploaded using multipart/form-data"
+      }
+    ],
+    "source": "https://core.telegram.org/bots/api#setchatphoto"
+  },
+  {
+    "method": "deleteChatPhoto",
+    "readOnly": false,
+    "scope": "channel",
+    "description": "Удалить фотографию канала.",
+    "required": [
+      "chat_id"
+    ],
+    "allowed": [
+      "chat_id"
+    ],
+    "parameters": [
+      {
+        "name": "chat_id",
+        "type": "Integer or String",
+        "required": true,
+        "description": "Unique identifier for the target chat or username of the target channel in the format `@username`"
+      }
+    ],
+    "source": "https://core.telegram.org/bots/api#deletechatphoto"
+  },
+  {
+    "method": "setChatTitle",
+    "readOnly": false,
+    "scope": "channel",
+    "description": "Изменить название канала.",
+    "required": [
+      "chat_id",
+      "title"
+    ],
+    "allowed": [
+      "chat_id",
+      "title"
+    ],
+    "parameters": [
+      {
+        "name": "chat_id",
+        "type": "Integer or String",
+        "required": true,
+        "description": "Unique identifier for the target chat or username of the target channel in the format `@username`"
+      },
+      {
+        "name": "title",
+        "type": "String",
+        "required": true,
+        "description": "New chat title, 1-128 characters"
+      }
+    ],
+    "source": "https://core.telegram.org/bots/api#setchattitle"
+  },
+  {
+    "method": "setChatDescription",
+    "readOnly": false,
+    "scope": "channel",
+    "description": "Изменить описание канала.",
+    "required": [
+      "chat_id"
+    ],
+    "allowed": [
+      "chat_id",
+      "description"
+    ],
+    "parameters": [
+      {
+        "name": "chat_id",
+        "type": "Integer or String",
+        "required": true,
+        "description": "Unique identifier for the target chat or username of the target channel in the format `@username`"
+      },
+      {
+        "name": "description",
+        "type": "String",
+        "required": false,
+        "description": "New chat description, 0-255 characters"
+      }
+    ],
+    "source": "https://core.telegram.org/bots/api#setchatdescription"
+  },
+  {
+    "method": "pinChatMessage",
+    "readOnly": false,
+    "scope": "channel",
+    "description": "Закрепить пост.",
+    "required": [
+      "chat_id",
+      "message_id"
+    ],
+    "allowed": [
+      "business_connection_id",
+      "chat_id",
+      "message_id",
+      "disable_notification"
+    ],
+    "parameters": [
+      {
+        "name": "business_connection_id",
+        "type": "String",
+        "required": false,
+        "description": "Unique identifier of the business connection on behalf of which the message will be pinned"
+      },
+      {
+        "name": "chat_id",
+        "type": "Integer or String",
+        "required": true,
+        "description": "Unique identifier for the target chat or username of the target channel in the format `@username`"
+      },
+      {
+        "name": "message_id",
+        "type": "Integer",
+        "required": true,
+        "description": "Identifier of a message to pin"
+      },
+      {
+        "name": "disable_notification",
+        "type": "Boolean",
+        "required": false,
+        "description": "Pass *True* if it is not necessary to send a notification to all chat members about the new pinned message. Notifications are always disabled in channels and private chats."
+      }
+    ],
+    "source": "https://core.telegram.org/bots/api#pinchatmessage"
+  },
+  {
+    "method": "unpinChatMessage",
+    "readOnly": false,
+    "scope": "channel",
+    "description": "Открепить один пост.",
+    "required": [
+      "chat_id"
+    ],
+    "allowed": [
+      "business_connection_id",
+      "chat_id",
+      "message_id"
+    ],
+    "parameters": [
+      {
+        "name": "business_connection_id",
+        "type": "String",
+        "required": false,
+        "description": "Unique identifier of the business connection on behalf of which the message will be unpinned"
+      },
+      {
+        "name": "chat_id",
+        "type": "Integer or String",
+        "required": true,
+        "description": "Unique identifier for the target chat or username of the target channel in the format `@username`"
+      },
+      {
+        "name": "message_id",
+        "type": "Integer",
+        "required": false,
+        "description": "Identifier of the message to unpin. Required if *business_connection_id* is specified. If not specified, the most recent pinned message (by sending date) will be unpinned."
+      }
+    ],
+    "source": "https://core.telegram.org/bots/api#unpinchatmessage"
+  },
+  {
+    "method": "unpinAllChatMessages",
+    "readOnly": false,
+    "scope": "channel",
+    "description": "Открепить все посты.",
+    "required": [
+      "chat_id"
+    ],
+    "allowed": [
+      "chat_id"
+    ],
+    "parameters": [
+      {
+        "name": "chat_id",
+        "type": "Integer or String",
+        "required": true,
+        "description": "Unique identifier for the target chat or username of the target channel in the format `@username`"
+      }
+    ],
+    "source": "https://core.telegram.org/bots/api#unpinallchatmessages"
+  },
+  {
+    "method": "getChat",
+    "readOnly": true,
+    "scope": "channel",
+    "description": "Получить актуальные сведения о канале.",
+    "required": [
+      "chat_id"
+    ],
+    "allowed": [
+      "chat_id"
+    ],
+    "parameters": [
+      {
+        "name": "chat_id",
+        "type": "Integer or String",
+        "required": true,
+        "description": "Unique identifier for the target chat or username of the target supergroup or channel in the format `@username`"
+      }
+    ],
+    "source": "https://core.telegram.org/bots/api#getchat"
+  },
+  {
+    "method": "getChatAdministrators",
+    "readOnly": true,
+    "scope": "channel",
+    "description": "Получить список администраторов канала.",
+    "required": [
+      "chat_id"
+    ],
+    "allowed": [
+      "chat_id",
+      "return_bots"
+    ],
+    "parameters": [
+      {
+        "name": "chat_id",
+        "type": "Integer or String",
+        "required": true,
+        "description": "Unique identifier for the target chat or username of the target supergroup or channel in the format `@username`"
+      },
+      {
+        "name": "return_bots",
+        "type": "Boolean",
+        "required": false,
+        "description": "Pass *True* to additionally receive all bots that are administrators of the chat. By default, bots other than the current bot are omitted."
+      }
+    ],
+    "source": "https://core.telegram.org/bots/api#getchatadministrators"
+  },
+  {
+    "method": "getChatMemberCount",
+    "readOnly": true,
+    "scope": "channel",
+    "description": "Получить число участников канала.",
+    "required": [
+      "chat_id"
+    ],
+    "allowed": [
+      "chat_id"
+    ],
+    "parameters": [
+      {
+        "name": "chat_id",
+        "type": "Integer or String",
+        "required": true,
+        "description": "Unique identifier for the target chat or username of the target supergroup or channel in the format `@username`"
+      }
+    ],
+    "source": "https://core.telegram.org/bots/api#getchatmembercount"
+  },
+  {
+    "method": "getChatMember",
+    "readOnly": true,
+    "scope": "channel",
+    "description": "Проверить статус и права участника в канале.",
+    "required": [
+      "chat_id",
+      "user_id"
+    ],
+    "allowed": [
+      "chat_id",
+      "user_id"
+    ],
+    "parameters": [
+      {
+        "name": "chat_id",
+        "type": "Integer or String",
+        "required": true,
+        "description": "Unique identifier for the target chat or username of the target supergroup or channel in the format `@username`"
+      },
+      {
+        "name": "user_id",
+        "type": "Integer",
+        "required": true,
+        "description": "Unique identifier of the target user"
+      }
+    ],
+    "source": "https://core.telegram.org/bots/api#getchatmember"
+  },
+  {
+    "method": "answerCallbackQuery",
+    "readOnly": false,
+    "scope": "bot",
+    "description": "Ответить на нажатие кнопки из обновления бота.",
+    "required": [
+      "callback_query_id"
+    ],
+    "allowed": [
+      "callback_query_id",
+      "text",
+      "show_alert",
+      "url",
+      "cache_time"
+    ],
+    "parameters": [
+      {
+        "name": "callback_query_id",
+        "type": "String",
+        "required": true,
+        "description": "Unique identifier for the query to be answered"
+      },
+      {
+        "name": "text",
+        "type": "String",
+        "required": false,
+        "description": "Text of the notification. If not specified, nothing will be shown to the user, 0-200 characters."
+      },
+      {
+        "name": "show_alert",
+        "type": "Boolean",
+        "required": false,
+        "description": "If *True*, an alert will be shown by the client instead of a notification at the top of the chat screen. Defaults to *False*."
+      },
+      {
+        "name": "url",
+        "type": "String",
+        "required": false,
+        "description": "URL that will be opened by the user's client. If you have created a [Game](/bots/api/types/game.md) and accepted the conditions via [@BotFather](https://t.me/botfather), specify the URL that opens your game - note that this will only work if the query comes from a [*callback_game*](/bots/api/types/inlinekeyboardbutton.md) button.\\"
+      },
+      {
+        "name": "cache_time",
+        "type": "Integer",
+        "required": false,
+        "description": "The maximum amount of time in seconds that the result of the callback query may be cached client-side. Defaults to 0."
+      }
+    ],
+    "source": "https://core.telegram.org/bots/api#answercallbackquery"
+  },
+  {
+    "method": "setMyCommands",
+    "readOnly": false,
+    "scope": "bot",
+    "description": "Настроить меню команд бота.",
+    "required": [
+      "commands"
+    ],
+    "allowed": [
+      "commands",
+      "scope",
+      "language_code"
+    ],
+    "parameters": [
+      {
+        "name": "commands",
+        "type": "Array of [BotCommand](/bots/api/types/botcommand.md)",
+        "required": true,
+        "description": "A JSON-serialized list of bot commands to be set as the list of the bot's commands. At most 100 commands can be specified."
+      },
+      {
+        "name": "scope",
+        "type": "[BotCommandScope](/bots/api/types/botcommandscope.md)",
+        "required": false,
+        "description": "A JSON-serialized object, describing scope of users for which the commands are relevant. Defaults to [BotCommandScopeDefault](/bots/api/types/botcommandscopedefault.md)."
+      },
+      {
+        "name": "language_code",
+        "type": "String",
+        "required": false,
+        "description": "A two-letter ISO 639-1 language code. If empty, commands will be applied to all users from the given scope, for whose language there are no dedicated commands."
+      }
+    ],
+    "source": "https://core.telegram.org/bots/api#setmycommands"
+  },
+  {
+    "method": "deleteMyCommands",
+    "readOnly": false,
+    "scope": "bot",
+    "description": "Удалить меню команд бота.",
+    "required": [],
+    "allowed": [
+      "scope",
+      "language_code"
+    ],
+    "parameters": [
+      {
+        "name": "scope",
+        "type": "[BotCommandScope](/bots/api/types/botcommandscope.md)",
+        "required": false,
+        "description": "A JSON-serialized object, describing scope of users for which the commands are relevant. Defaults to [BotCommandScopeDefault](/bots/api/types/botcommandscopedefault.md)."
+      },
+      {
+        "name": "language_code",
+        "type": "String",
+        "required": false,
+        "description": "A two-letter ISO 639-1 language code. If empty, commands will be applied to all users from the given scope, for whose language there are no dedicated commands."
+      }
+    ],
+    "source": "https://core.telegram.org/bots/api#deletemycommands"
+  },
+  {
+    "method": "getMyCommands",
+    "readOnly": true,
+    "scope": "bot",
+    "description": "Получить меню команд бота.",
+    "required": [],
+    "allowed": [
+      "scope",
+      "language_code"
+    ],
+    "parameters": [
+      {
+        "name": "scope",
+        "type": "[BotCommandScope](/bots/api/types/botcommandscope.md)",
+        "required": false,
+        "description": "A JSON-serialized object, describing scope of users. Defaults to [BotCommandScopeDefault](/bots/api/types/botcommandscopedefault.md)."
+      },
+      {
+        "name": "language_code",
+        "type": "String",
+        "required": false,
+        "description": "A two-letter ISO 639-1 language code or an empty string"
+      }
+    ],
+    "source": "https://core.telegram.org/bots/api#getmycommands"
+  },
+  {
+    "method": "setMyName",
+    "readOnly": false,
+    "scope": "bot",
+    "description": "Изменить имя бота.",
+    "required": [],
+    "allowed": [
+      "name",
+      "language_code"
+    ],
+    "parameters": [
+      {
+        "name": "name",
+        "type": "String",
+        "required": false,
+        "description": "New bot name; 0-64 characters. Pass an empty string to remove the dedicated name for the given language."
+      },
+      {
+        "name": "language_code",
+        "type": "String",
+        "required": false,
+        "description": "A two-letter ISO 639-1 language code. If empty, the name will be shown to all users for whose language there is no dedicated name."
+      }
+    ],
+    "source": "https://core.telegram.org/bots/api#setmyname"
+  },
+  {
+    "method": "getMyName",
+    "readOnly": true,
+    "scope": "bot",
+    "description": "Получить имя бота.",
+    "required": [],
+    "allowed": [
+      "language_code"
+    ],
+    "parameters": [
+      {
+        "name": "language_code",
+        "type": "String",
+        "required": false,
+        "description": "A two-letter ISO 639-1 language code or an empty string"
+      }
+    ],
+    "source": "https://core.telegram.org/bots/api#getmyname"
+  },
+  {
+    "method": "setMyDescription",
+    "readOnly": false,
+    "scope": "bot",
+    "description": "Изменить полное описание бота.",
+    "required": [],
+    "allowed": [
+      "description",
+      "language_code"
+    ],
+    "parameters": [
+      {
+        "name": "description",
+        "type": "String",
+        "required": false,
+        "description": "New bot description; 0-512 characters. Pass an empty string to remove the dedicated description for the given language."
+      },
+      {
+        "name": "language_code",
+        "type": "String",
+        "required": false,
+        "description": "A two-letter ISO 639-1 language code. If empty, the description will be applied to all users for whose language there is no dedicated description."
+      }
+    ],
+    "source": "https://core.telegram.org/bots/api#setmydescription"
+  },
+  {
+    "method": "getMyDescription",
+    "readOnly": true,
+    "scope": "bot",
+    "description": "Получить полное описание бота.",
+    "required": [],
+    "allowed": [
+      "language_code"
+    ],
+    "parameters": [
+      {
+        "name": "language_code",
+        "type": "String",
+        "required": false,
+        "description": "A two-letter ISO 639-1 language code or an empty string"
+      }
+    ],
+    "source": "https://core.telegram.org/bots/api#getmydescription"
+  },
+  {
+    "method": "setMyShortDescription",
+    "readOnly": false,
+    "scope": "bot",
+    "description": "Изменить краткое описание бота.",
+    "required": [],
+    "allowed": [
+      "short_description",
+      "language_code"
+    ],
+    "parameters": [
+      {
+        "name": "short_description",
+        "type": "String",
+        "required": false,
+        "description": "New short description for the bot; 0-120 characters. Pass an empty string to remove the dedicated short description for the given language."
+      },
+      {
+        "name": "language_code",
+        "type": "String",
+        "required": false,
+        "description": "A two-letter ISO 639-1 language code. If empty, the short description will be applied to all users for whose language there is no dedicated short description."
+      }
+    ],
+    "source": "https://core.telegram.org/bots/api#setmyshortdescription"
+  },
+  {
+    "method": "getMyShortDescription",
+    "readOnly": true,
+    "scope": "bot",
+    "description": "Получить краткое описание бота.",
+    "required": [],
+    "allowed": [
+      "language_code"
+    ],
+    "parameters": [
+      {
+        "name": "language_code",
+        "type": "String",
+        "required": false,
+        "description": "A two-letter ISO 639-1 language code or an empty string"
+      }
+    ],
+    "source": "https://core.telegram.org/bots/api#getmyshortdescription"
+  },
+  {
+    "method": "setMyProfilePhoto",
+    "readOnly": false,
+    "scope": "bot",
+    "description": "Изменить фотографию профиля бота.",
+    "required": [
+      "photo"
+    ],
+    "allowed": [
+      "photo"
+    ],
+    "parameters": [
+      {
+        "name": "photo",
+        "type": "[InputProfilePhoto](/bots/api/types/inputprofilephoto.md)",
+        "required": true,
+        "description": "The new profile photo to set"
+      }
+    ],
+    "source": "https://core.telegram.org/bots/api#setmyprofilephoto"
+  },
+  {
+    "method": "removeMyProfilePhoto",
+    "readOnly": false,
+    "scope": "bot",
+    "description": "Удалить фотографию профиля бота.",
+    "required": [],
+    "allowed": [],
+    "parameters": [],
+    "source": "https://core.telegram.org/bots/api#removemyprofilephoto"
+  },
+  {
+    "method": "setChatMenuButton",
+    "readOnly": false,
+    "scope": "bot",
+    "description": "Настроить кнопку меню бота; для канала обычно не применяется, chat_id нужно исключить.",
+    "required": [],
+    "allowed": [
+      "chat_id",
+      "menu_button"
+    ],
+    "parameters": [
+      {
+        "name": "chat_id",
+        "type": "Integer",
+        "required": false,
+        "description": "Unique identifier for the target private chat. If not specified, the bot's default menu button will be changed."
+      },
+      {
+        "name": "menu_button",
+        "type": "[MenuButton](/bots/api/types/menubutton.md)",
+        "required": false,
+        "description": "A JSON-serialized object for the bot's new menu button. Defaults to [MenuButtonDefault](/bots/api/types/menubuttondefault.md)."
+      }
+    ],
+    "source": "https://core.telegram.org/bots/api#setchatmenubutton"
+  },
+  {
+    "method": "getChatMenuButton",
+    "readOnly": true,
+    "scope": "bot",
+    "description": "Получить кнопку меню бота по умолчанию.",
+    "required": [],
+    "allowed": [
+      "chat_id"
+    ],
+    "parameters": [
+      {
+        "name": "chat_id",
+        "type": "Integer",
+        "required": false,
+        "description": "Unique identifier for the target private chat. If not specified, the bot's default menu button will be returned."
+      }
+    ],
+    "source": "https://core.telegram.org/bots/api#getchatmenubutton"
+  },
+  {
+    "method": "setMyDefaultAdministratorRights",
+    "readOnly": false,
+    "scope": "bot",
+    "description": "Изменить права администратора, запрашиваемые ботом по умолчанию; не меняет реальные права в канале.",
+    "required": [],
+    "allowed": [
+      "rights",
+      "for_channels"
+    ],
+    "parameters": [
+      {
+        "name": "rights",
+        "type": "[ChatAdministratorRights](/bots/api/types/chatadministratorrights.md)",
+        "required": false,
+        "description": "A JSON-serialized object describing new default administrator rights. If not specified, the default administrator rights will be cleared."
+      },
+      {
+        "name": "for_channels",
+        "type": "Boolean",
+        "required": false,
+        "description": "Pass *True* to change the default administrator rights of the bot in channels. Otherwise, the default administrator rights of the bot for groups and supergroups will be changed."
+      }
+    ],
+    "source": "https://core.telegram.org/bots/api#setmydefaultadministratorrights"
+  },
+  {
+    "method": "getMyDefaultAdministratorRights",
+    "readOnly": true,
+    "scope": "bot",
+    "description": "Получить запрашиваемые права администратора по умолчанию.",
+    "required": [],
+    "allowed": [
+      "for_channels"
+    ],
+    "parameters": [
+      {
+        "name": "for_channels",
+        "type": "Boolean",
+        "required": false,
+        "description": "Pass *True* to get default administrator rights of the bot in channels. Otherwise, default administrator rights of the bot for groups and supergroups will be returned."
+      }
+    ],
+    "source": "https://core.telegram.org/bots/api#getmydefaultadministratorrights"
+  },
+  {
+    "method": "editMessageText",
+    "readOnly": false,
+    "scope": "channel",
+    "description": "Изменить текст существующего поста.",
+    "required": [],
+    "allowed": [
+      "business_connection_id",
+      "chat_id",
+      "message_id",
+      "inline_message_id",
+      "text",
+      "parse_mode",
+      "entities",
+      "link_preview_options",
+      "rich_message",
+      "reply_markup"
+    ],
+    "parameters": [
+      {
+        "name": "business_connection_id",
+        "type": "String",
+        "required": false,
+        "description": "Unique identifier of the business connection on behalf of which the message to be edited was sent"
+      },
+      {
+        "name": "chat_id",
+        "type": "Integer or String",
+        "required": false,
+        "description": "Required if *inline_message_id* is not specified. Unique identifier for the target chat or username of the target bot, supergroup or channel in the format `@username`."
+      },
+      {
+        "name": "message_id",
+        "type": "Integer",
+        "required": false,
+        "description": "Required if *inline_message_id* is not specified. Identifier of the message to edit."
+      },
+      {
+        "name": "inline_message_id",
+        "type": "String",
+        "required": false,
+        "description": "Required if *chat_id* and *message_id* are not specified. Identifier of the inline message."
+      },
+      {
+        "name": "text",
+        "type": "String",
+        "required": false,
+        "description": "New text of the message, 1-4096 characters after entity parsing; required if *rich_message* isn't specified"
+      },
+      {
+        "name": "parse_mode",
+        "type": "String",
+        "required": false,
+        "description": "Mode for parsing entities in the message text. See [formatting options](/bots/api/formatting.md) for more details."
+      },
+      {
+        "name": "entities",
+        "type": "Array of [MessageEntity](/bots/api/types/messageentity.md)",
+        "required": false,
+        "description": "A JSON-serialized list of special entities that appear in message text, which can be specified instead of *parse_mode*"
+      },
+      {
+        "name": "link_preview_options",
+        "type": "[LinkPreviewOptions](/bots/api/types/linkpreviewoptions.md)",
+        "required": false,
+        "description": "Link preview generation options for the message"
+      },
+      {
+        "name": "rich_message",
+        "type": "[InputRichMessage](/bots/api/types/inputrichmessage.md)",
+        "required": false,
+        "description": "New rich content of the message; required if *text* isn't specified. Direct upload of new files and explicit upload of files by a URL isn't supported when an inline message is edited."
+      },
+      {
+        "name": "reply_markup",
+        "type": "[InlineKeyboardMarkup](/bots/api/types/inlinekeyboardmarkup.md)",
+        "required": false,
+        "description": "A JSON-serialized object for an [inline keyboard](/bots/features.md#inline-keyboards)"
+      }
+    ],
+    "source": "https://core.telegram.org/bots/api#editmessagetext"
+  },
+  {
+    "method": "editMessageCaption",
+    "readOnly": false,
+    "scope": "channel",
+    "description": "Изменить подпись вложения.",
+    "required": [],
+    "allowed": [
+      "business_connection_id",
+      "chat_id",
+      "message_id",
+      "inline_message_id",
+      "caption",
+      "parse_mode",
+      "caption_entities",
+      "show_caption_above_media",
+      "reply_markup"
+    ],
+    "parameters": [
+      {
+        "name": "business_connection_id",
+        "type": "String",
+        "required": false,
+        "description": "Unique identifier of the business connection on behalf of which the message to be edited was sent"
+      },
+      {
+        "name": "chat_id",
+        "type": "Integer or String",
+        "required": false,
+        "description": "Required if *inline_message_id* is not specified. Unique identifier for the target chat or username of the target bot, supergroup or channel in the format `@username`."
+      },
+      {
+        "name": "message_id",
+        "type": "Integer",
+        "required": false,
+        "description": "Required if *inline_message_id* is not specified. Identifier of the message to edit."
+      },
+      {
+        "name": "inline_message_id",
+        "type": "String",
+        "required": false,
+        "description": "Required if *chat_id* and *message_id* are not specified. Identifier of the inline message."
+      },
+      {
+        "name": "caption",
+        "type": "String",
+        "required": false,
+        "description": "New caption of the message, 0-1024 characters after entities parsing"
+      },
+      {
+        "name": "parse_mode",
+        "type": "String",
+        "required": false,
+        "description": "Mode for parsing entities in the message caption. See [formatting options](/bots/api/formatting.md) for more details."
+      },
+      {
+        "name": "caption_entities",
+        "type": "Array of [MessageEntity](/bots/api/types/messageentity.md)",
+        "required": false,
+        "description": "A JSON-serialized list of special entities that appear in the caption, which can be specified instead of *parse_mode*"
+      },
+      {
+        "name": "show_caption_above_media",
+        "type": "Boolean",
+        "required": false,
+        "description": "Pass *True* if the caption must be shown above the message media. Supported only for animation, photo and video messages."
+      },
+      {
+        "name": "reply_markup",
+        "type": "[InlineKeyboardMarkup](/bots/api/types/inlinekeyboardmarkup.md)",
+        "required": false,
+        "description": "A JSON-serialized object for an [inline keyboard](/bots/features.md#inline-keyboards)"
+      }
+    ],
+    "source": "https://core.telegram.org/bots/api#editmessagecaption"
+  },
+  {
+    "method": "editMessageMedia",
+    "readOnly": false,
+    "scope": "channel",
+    "description": "Заменить вложение существующего поста.",
+    "required": [
+      "media"
+    ],
+    "allowed": [
+      "business_connection_id",
+      "chat_id",
+      "message_id",
+      "inline_message_id",
+      "media",
+      "reply_markup"
+    ],
+    "parameters": [
+      {
+        "name": "business_connection_id",
+        "type": "String",
+        "required": false,
+        "description": "Unique identifier of the business connection on behalf of which the message to be edited was sent"
+      },
+      {
+        "name": "chat_id",
+        "type": "Integer or String",
+        "required": false,
+        "description": "Required if *inline_message_id* is not specified. Unique identifier for the target chat or username of the target bot, supergroup or channel in the format `@username`."
+      },
+      {
+        "name": "message_id",
+        "type": "Integer",
+        "required": false,
+        "description": "Required if *inline_message_id* is not specified. Identifier of the message to edit."
+      },
+      {
+        "name": "inline_message_id",
+        "type": "String",
+        "required": false,
+        "description": "Required if *chat_id* and *message_id* are not specified. Identifier of the inline message."
+      },
+      {
+        "name": "media",
+        "type": "[InputMedia](/bots/api/types/inputmedia.md)",
+        "required": true,
+        "description": "A JSON-serialized object for the new media content of the message"
+      },
+      {
+        "name": "reply_markup",
+        "type": "[InlineKeyboardMarkup](/bots/api/types/inlinekeyboardmarkup.md)",
+        "required": false,
+        "description": "A JSON-serialized object for a new [inline keyboard](/bots/features.md#inline-keyboards)"
+      }
+    ],
+    "source": "https://core.telegram.org/bots/api#editmessagemedia"
+  },
+  {
+    "method": "editMessageLiveLocation",
+    "readOnly": false,
+    "scope": "channel",
+    "description": "Обновить транслируемое местоположение.",
+    "required": [
+      "latitude",
+      "longitude"
+    ],
+    "allowed": [
+      "business_connection_id",
+      "chat_id",
+      "message_id",
+      "inline_message_id",
+      "latitude",
+      "longitude",
+      "live_period",
+      "horizontal_accuracy",
+      "heading",
+      "proximity_alert_radius",
+      "reply_markup"
+    ],
+    "parameters": [
+      {
+        "name": "business_connection_id",
+        "type": "String",
+        "required": false,
+        "description": "Unique identifier of the business connection on behalf of which the message to be edited was sent"
+      },
+      {
+        "name": "chat_id",
+        "type": "Integer or String",
+        "required": false,
+        "description": "Required if *inline_message_id* is not specified. Unique identifier for the target chat or username of the target bot, supergroup or channel in the format `@username`."
+      },
+      {
+        "name": "message_id",
+        "type": "Integer",
+        "required": false,
+        "description": "Required if *inline_message_id* is not specified. Identifier of the message to edit."
+      },
+      {
+        "name": "inline_message_id",
+        "type": "String",
+        "required": false,
+        "description": "Required if *chat_id* and *message_id* are not specified. Identifier of the inline message."
+      },
+      {
+        "name": "latitude",
+        "type": "Float",
+        "required": true,
+        "description": "Latitude of new location"
+      },
+      {
+        "name": "longitude",
+        "type": "Float",
+        "required": true,
+        "description": "Longitude of new location"
+      },
+      {
+        "name": "live_period",
+        "type": "Integer",
+        "required": false,
+        "description": "New period in seconds during which the location can be updated, starting from the message send date. If 0x7FFFFFFF is specified, then the location can be updated forever. Otherwise, the new value must not exceed the current *live_period* by more than a day, and the live location expiration date must remain within the next 90 days. If not specified, then *live_period* remains unchanged."
+      },
+      {
+        "name": "horizontal_accuracy",
+        "type": "Float",
+        "required": false,
+        "description": "The radius of uncertainty for the location, measured in meters; 0-1500"
+      },
+      {
+        "name": "heading",
+        "type": "Integer",
+        "required": false,
+        "description": "Direction in which the user is moving, in degrees. Must be between 1 and 360 if specified."
+      },
+      {
+        "name": "proximity_alert_radius",
+        "type": "Integer",
+        "required": false,
+        "description": "The maximum distance for proximity alerts about approaching another chat member, in meters. Must be between 1 and 100000 if specified."
+      },
+      {
+        "name": "reply_markup",
+        "type": "[InlineKeyboardMarkup](/bots/api/types/inlinekeyboardmarkup.md)",
+        "required": false,
+        "description": "A JSON-serialized object for a new [inline keyboard](/bots/features.md#inline-keyboards)"
+      }
+    ],
+    "source": "https://core.telegram.org/bots/api#editmessagelivelocation"
+  },
+  {
+    "method": "stopMessageLiveLocation",
+    "readOnly": false,
+    "scope": "channel",
+    "description": "Остановить трансляцию местоположения.",
+    "required": [],
+    "allowed": [
+      "business_connection_id",
+      "chat_id",
+      "message_id",
+      "inline_message_id",
+      "reply_markup"
+    ],
+    "parameters": [
+      {
+        "name": "business_connection_id",
+        "type": "String",
+        "required": false,
+        "description": "Unique identifier of the business connection on behalf of which the message to be edited was sent"
+      },
+      {
+        "name": "chat_id",
+        "type": "Integer or String",
+        "required": false,
+        "description": "Required if *inline_message_id* is not specified. Unique identifier for the target chat or username of the target bot, supergroup or channel in the format `@username`."
+      },
+      {
+        "name": "message_id",
+        "type": "Integer",
+        "required": false,
+        "description": "Required if *inline_message_id* is not specified. Identifier of the message with live location to stop."
+      },
+      {
+        "name": "inline_message_id",
+        "type": "String",
+        "required": false,
+        "description": "Required if *chat_id* and *message_id* are not specified. Identifier of the inline message."
+      },
+      {
+        "name": "reply_markup",
+        "type": "[InlineKeyboardMarkup](/bots/api/types/inlinekeyboardmarkup.md)",
+        "required": false,
+        "description": "A JSON-serialized object for a new [inline keyboard](/bots/features.md#inline-keyboards)"
+      }
+    ],
+    "source": "https://core.telegram.org/bots/api#stopmessagelivelocation"
+  },
+  {
+    "method": "editMessageReplyMarkup",
+    "readOnly": false,
+    "scope": "channel",
+    "description": "Изменить кнопки под постом.",
+    "required": [],
+    "allowed": [
+      "business_connection_id",
+      "chat_id",
+      "message_id",
+      "inline_message_id",
+      "reply_markup"
+    ],
+    "parameters": [
+      {
+        "name": "business_connection_id",
+        "type": "String",
+        "required": false,
+        "description": "Unique identifier of the business connection on behalf of which the message to be edited was sent"
+      },
+      {
+        "name": "chat_id",
+        "type": "Integer or String",
+        "required": false,
+        "description": "Required if *inline_message_id* is not specified. Unique identifier for the target chat or username of the target bot, supergroup or channel in the format `@username`."
+      },
+      {
+        "name": "message_id",
+        "type": "Integer",
+        "required": false,
+        "description": "Required if *inline_message_id* is not specified. Identifier of the message to edit."
+      },
+      {
+        "name": "inline_message_id",
+        "type": "String",
+        "required": false,
+        "description": "Required if *chat_id* and *message_id* are not specified. Identifier of the inline message."
+      },
+      {
+        "name": "reply_markup",
+        "type": "[InlineKeyboardMarkup](/bots/api/types/inlinekeyboardmarkup.md)",
+        "required": false,
+        "description": "A JSON-serialized object for an [inline keyboard](/bots/features.md#inline-keyboards)"
+      }
+    ],
+    "source": "https://core.telegram.org/bots/api#editmessagereplymarkup"
+  },
+  {
+    "method": "stopPoll",
+    "readOnly": false,
+    "scope": "channel",
+    "description": "Закрыть опрос.",
+    "required": [
+      "chat_id",
+      "message_id"
+    ],
+    "allowed": [
+      "business_connection_id",
+      "chat_id",
+      "message_id",
+      "reply_markup"
+    ],
+    "parameters": [
+      {
+        "name": "business_connection_id",
+        "type": "String",
+        "required": false,
+        "description": "Unique identifier of the business connection on behalf of which the message to be edited was sent"
+      },
+      {
+        "name": "chat_id",
+        "type": "Integer or String",
+        "required": true,
+        "description": "Unique identifier for the target chat or username of the target bot, supergroup or channel in the format `@username`"
+      },
+      {
+        "name": "message_id",
+        "type": "Integer",
+        "required": true,
+        "description": "Identifier of the original message with the poll"
+      },
+      {
+        "name": "reply_markup",
+        "type": "[InlineKeyboardMarkup](/bots/api/types/inlinekeyboardmarkup.md)",
+        "required": false,
+        "description": "A JSON-serialized object for a new message [inline keyboard](/bots/features.md#inline-keyboards)"
+      }
+    ],
+    "source": "https://core.telegram.org/bots/api#stoppoll"
+  },
+  {
+    "method": "approveSuggestedPost",
+    "readOnly": false,
+    "scope": "channel",
+    "description": "Одобрить предложенный пост; требует доступа к direct messages канала.",
+    "required": [
+      "chat_id",
+      "message_id"
+    ],
+    "allowed": [
+      "chat_id",
+      "message_id",
+      "send_date"
+    ],
+    "parameters": [
+      {
+        "name": "chat_id",
+        "type": "Integer",
+        "required": true,
+        "description": "Unique identifier for the target direct messages chat"
+      },
+      {
+        "name": "message_id",
+        "type": "Integer",
+        "required": true,
+        "description": "Identifier of a suggested post message to approve"
+      },
+      {
+        "name": "send_date",
+        "type": "Integer",
+        "required": false,
+        "description": "Point in time (Unix timestamp) when the post is expected to be published; omit if the date has already been specified when the suggested post was created. If specified, then the date must be not more than 2678400 seconds (30 days) in the future."
+      }
+    ],
+    "source": "https://core.telegram.org/bots/api#approvesuggestedpost"
+  },
+  {
+    "method": "declineSuggestedPost",
+    "readOnly": false,
+    "scope": "channel",
+    "description": "Отклонить предложенный пост; требует доступа к direct messages канала.",
+    "required": [
+      "chat_id",
+      "message_id"
+    ],
+    "allowed": [
+      "chat_id",
+      "message_id",
+      "comment"
+    ],
+    "parameters": [
+      {
+        "name": "chat_id",
+        "type": "Integer",
+        "required": true,
+        "description": "Unique identifier for the target direct messages chat"
+      },
+      {
+        "name": "message_id",
+        "type": "Integer",
+        "required": true,
+        "description": "Identifier of a suggested post message to decline"
+      },
+      {
+        "name": "comment",
+        "type": "String",
+        "required": false,
+        "description": "Comment for the creator of the suggested post; 0-128 characters"
+      }
+    ],
+    "source": "https://core.telegram.org/bots/api#declinesuggestedpost"
+  },
+  {
+    "method": "deleteMessage",
+    "readOnly": false,
+    "scope": "channel",
+    "description": "Удалить один пост с учётом ограничений Telegram.",
+    "required": [
+      "chat_id",
+      "message_id"
+    ],
+    "allowed": [
+      "chat_id",
+      "message_id"
+    ],
+    "parameters": [
+      {
+        "name": "chat_id",
+        "type": "Integer or String",
+        "required": true,
+        "description": "Unique identifier for the target chat or username of the target bot, supergroup or channel in the format `@username`"
+      },
+      {
+        "name": "message_id",
+        "type": "Integer",
+        "required": true,
+        "description": "Identifier of the message to delete"
+      }
+    ],
+    "source": "https://core.telegram.org/bots/api#deletemessage"
+  },
+  {
+    "method": "deleteMessages",
+    "readOnly": false,
+    "scope": "channel",
+    "description": "Удалить до 100 постов за запрос с учётом ограничений Telegram.",
+    "required": [
+      "chat_id",
+      "message_ids"
+    ],
+    "allowed": [
+      "chat_id",
+      "message_ids"
+    ],
+    "parameters": [
+      {
+        "name": "chat_id",
+        "type": "Integer or String",
+        "required": true,
+        "description": "Unique identifier for the target chat or username of the target bot, supergroup or channel in the format `@username`"
+      },
+      {
+        "name": "message_ids",
+        "type": "Array of Integer",
+        "required": true,
+        "description": "A JSON-serialized list of 1-100 identifiers of messages to delete. See [deleteMessage](/bots/api/methods/deletemessage.md) for limitations on which messages can be deleted."
+      }
+    ],
+    "source": "https://core.telegram.org/bots/api#deletemessages"
+  },
+  {
+    "method": "sendSticker",
+    "readOnly": false,
+    "scope": "channel",
+    "description": "Опубликовать стикер.",
+    "required": [
+      "chat_id",
+      "sticker"
+    ],
+    "allowed": [
+      "business_connection_id",
+      "chat_id",
+      "message_thread_id",
+      "direct_messages_topic_id",
+      "ephemeral_message_parameters",
+      "sticker",
+      "emoji",
+      "disable_notification",
+      "protect_content",
+      "allow_paid_broadcast",
+      "message_effect_id",
+      "suggested_post_parameters",
+      "reply_parameters",
+      "reply_markup"
+    ],
+    "parameters": [
+      {
+        "name": "business_connection_id",
+        "type": "String",
+        "required": false,
+        "description": "Unique identifier of the business connection on behalf of which the message will be sent"
+      },
+      {
+        "name": "chat_id",
+        "type": "Integer or String",
+        "required": true,
+        "description": "Unique identifier for the target chat or username of the target bot, supergroup or channel in the format `@username`"
+      },
+      {
+        "name": "message_thread_id",
+        "type": "Integer",
+        "required": false,
+        "description": "Unique identifier for the target message thread (topic) of a forum; for forum supergroups and private chats of bots with forum topic mode enabled only"
+      },
+      {
+        "name": "direct_messages_topic_id",
+        "type": "Integer",
+        "required": false,
+        "description": "Identifier of the direct messages topic to which the message will be sent; required if the message is sent to a direct messages chat"
+      },
+      {
+        "name": "ephemeral_message_parameters",
+        "type": "[EphemeralMessageParameters](/bots/api/types/ephemeralmessageparameters.md)",
+        "required": false,
+        "description": "A JSON-serialized object containing the parameters of the ephemeral message to send"
+      },
+      {
+        "name": "sticker",
+        "type": "[InputFile](/bots/api/types/inputfile.md) or String",
+        "required": true,
+        "description": "Sticker to send. Pass a file_id as String to send a file that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get a .WEBP sticker from the Internet, or upload a new .WEBP, .TGS, or .WEBM sticker using multipart/form-data. [More information on Sending Files »](/bots/api.md#sending-files). Video and animated stickers can't be sent via an HTTP URL."
+      },
+      {
+        "name": "emoji",
+        "type": "String",
+        "required": false,
+        "description": "Emoji associated with the sticker; only for just uploaded stickers"
+      },
+      {
+        "name": "disable_notification",
+        "type": "Boolean",
+        "required": false,
+        "description": "Sends the message [silently](https://telegram.org/blog/channels-2-0#silent-messages). Users will receive a notification with no sound."
+      },
+      {
+        "name": "protect_content",
+        "type": "Boolean",
+        "required": false,
+        "description": "Protects the contents of the sent message from forwarding and saving"
+      },
+      {
+        "name": "allow_paid_broadcast",
+        "type": "Boolean",
+        "required": false,
+        "description": "Pass *True* to allow up to 1000 messages per second, ignoring [broadcasting limits](/bots/faq.md#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance."
+      },
+      {
+        "name": "message_effect_id",
+        "type": "String",
+        "required": false,
+        "description": "Unique identifier of the message effect to be added to the message; for private chats only"
+      },
+      {
+        "name": "suggested_post_parameters",
+        "type": "[SuggestedPostParameters](/bots/api/types/suggestedpostparameters.md)",
+        "required": false,
+        "description": "A JSON-serialized object containing the parameters of the suggested post to send; for direct messages chats only. If the message is sent as a reply to another suggested post, then that suggested post is automatically declined."
+      },
+      {
+        "name": "reply_parameters",
+        "type": "[ReplyParameters](/bots/api/types/replyparameters.md)",
+        "required": false,
+        "description": "Description of the message to reply to"
+      },
+      {
+        "name": "reply_markup",
+        "type": "[InlineKeyboardMarkup](/bots/api/types/inlinekeyboardmarkup.md) or [ReplyKeyboardMarkup](/bots/api/types/replykeyboardmarkup.md) or [ReplyKeyboardRemove](/bots/api/types/replykeyboardremove.md) or [ForceReply](/bots/api/types/forcereply.md)",
+        "required": false,
+        "description": "Additional interface options. A JSON-serialized object for an [inline keyboard](/bots/features.md#inline-keyboards), [custom reply keyboard](/bots/features.md#keyboards), instructions to remove a reply keyboard or to force a reply from the user."
+      }
+    ],
+    "source": "https://core.telegram.org/bots/api#sendsticker"
+  }
+]

@@ -1,4 +1,4 @@
-import { sqliteTable, text } from "drizzle-orm/sqlite-core";
+import { sqliteTable, text, integer } from "drizzle-orm/sqlite-core";
 export const operations = sqliteTable("operations", {
   id: text("id").primaryKey(), ownerId: text("owner_id").notNull(),
   operationKey: text("operation_key").notNull(), method: text("method").notNull(),
@@ -7,4 +7,10 @@ export const operations = sqliteTable("operations", {
 });
 export const connectionState = sqliteTable("connection_state", {
   id: text("id").primaryKey(), valueJson: text("value_json").notNull(), updatedAt: text("updated_at").notNull(),
+});
+
+export const assets = sqliteTable("assets", {
+  id: text("id").primaryKey(), objectKey: text("object_key").notNull(),
+  filename: text("filename").notNull(), mime: text("mime").notNull(),
+  size: integer("size").notNull(), sha256: text("sha256").notNull(), createdAt: text("created_at").notNull(),
 });
